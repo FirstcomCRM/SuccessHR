@@ -54,6 +54,7 @@
     $o->emplleave_days = $_POST['emplleave_days'];
     $o->emplleave_disabled = $_POST['emplleave_disabled'];
     $o->emplleave_entitled = $_POST['emplleave_entitled'];
+    $o->empl_extentionprobation = $_POST['empl_extentionprobation'];
 
     $o->empl_levy_amt = escape($_POST['empl_levy_amt']);
     $o->empl_pass_issuance = escape($_REQUEST['empl_pass_issuance']);
@@ -73,6 +74,7 @@
     $o->empl_sld_opt_out = escape($_POST['empl_sld_opt_out']);
     $o->empl_fund_opt_out = escape($_POST['empl_fund_opt_out']);
     $o->empl_fund_first_half = escape($_POST['empl_fund_first_half']);
+    $o->empl_designation = escape($_POST['empl_designation']);
 
     $o->empl_emer_contact = escape($_POST['empl_emer_contact']);
     $o->empl_emer_relation = escape($_POST['empl_emer_relation']);
@@ -114,21 +116,21 @@
     $o->checkAccess($action);
     switch ($action) {
         case "create":
-            if(getWindowPermission($_SESSION['m'][$_SESSION['empl_id']],'create')){
-                if($o->create()){
-                    $_SESSION['status_alert'] = 'alert-success';
-                    $_SESSION['status_msg'] = "Create success.";
-                    rediectUrl("empl.php?action=edit&empl_id=$o->empl_id&current_tab=Salary Info",getSystemMsg(1,'Create data successfully'));
+                if(getWindowPermission($_SESSION['m'][$_SESSION['empl_id']],'create')){
+                    if($o->create()){
+                        $_SESSION['status_alert'] = 'alert-success';
+                        $_SESSION['status_msg'] = "Create success.";
+                        rediectUrl("empl.php?action=edit&empl_id=$o->empl_id&current_tab=Salary Info",getSystemMsg(1,'Create data successfully'));
+                    }else{
+                        $_SESSION['status_alert'] = 'alert-error';
+                        $_SESSION['status_msg'] = "Create fail.";
+                        rediectUrl("empl.php",getSystemMsg(0,'Create data fail'));
+                    }
                 }else{
-                    $_SESSION['status_alert'] = 'alert-error';
-                    $_SESSION['status_msg'] = "Create fail.";
-                    rediectUrl("empl.php",getSystemMsg(0,'Create data fail'));
+                        $_SESSION['status_alert'] = 'alert-error';
+                        $_SESSION['status_msg'] = "Create fail.";
+                        rediectUrl("empl.php",getSystemMsg(0,'Permission Denied'));
                 }
-            }else{
-                    $_SESSION['status_alert'] = 'alert-error';
-                    $_SESSION['status_msg'] = "Create fail.";
-                    rediectUrl("empl.php",getSystemMsg(0,'Permission Denied'));
-            }
             exit();
             break;
         case "update":
