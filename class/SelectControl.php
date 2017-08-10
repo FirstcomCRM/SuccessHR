@@ -110,6 +110,26 @@ class SelectControl {
         return $selectctrl;
     }
     public function getEmployeeSelectCtrl($pid,$shownull="Y",$wherestring=''){
+        $sql = "SELECT empl_id,CONCAT(empl_code,' - ',empl_name) as empl_name from db_empl WHERE (empl_id = '$pid' or empl_id >0) and empl_status = 1 and empl_client = '0' $wherestring
+                ORDER BY empl_seqno,empl_name ASC"; 
+
+        if($shownull =="Y"){
+            $selectctrl .="<option value = '' SELECTED='SELECTED'>Select One</option>";
+        }
+        $query = mysql_query($sql);
+        while($row = mysql_fetch_array($query)){
+            $id = $row['empl_id'];
+            $code = $row['empl_name'];
+            if($id == $pid){
+                $selected = "SELECTED = 'SELECTED'";
+            }else{
+                $selected = "";
+            }
+            $selectctrl .="<option value = '$id' $selected>$code</option>"; 
+        }
+        return $selectctrl;
+    }
+    public function getSalesPersonCtrl($pid,$shownull="Y",$wherestring=''){
         $sql = "SELECT empl_id,CONCAT(empl_code,' - ',empl_name) as empl_name from db_empl WHERE (empl_id = '$pid' or empl_id >0) and empl_status = 1 and empl_client = '0' and (empl_group = '4' or empl_group = '8') $wherestring
                 ORDER BY empl_seqno,empl_name ASC"; 
 
@@ -129,6 +149,26 @@ class SelectControl {
         }
         return $selectctrl;
     }
+    public function getApprovedEmployeeSelectCtrl($pid,$shownull="Y",$wherestring=''){
+        $sql = "SELECT empl_id,CONCAT(empl_code,' - ',empl_name) as empl_name from db_empl WHERE (empl_id = '$pid' or empl_id >0) and empl_status = 1 and empl_client = '0' and empl_group = '1' $wherestring
+                ORDER BY empl_seqno,empl_name ASC"; 
+
+        if($shownull =="Y"){
+            $selectctrl .="<option value = '' SELECTED='SELECTED'>Select One</option>";
+        }
+        $query = mysql_query($sql);
+        while($row = mysql_fetch_array($query)){
+            $id = $row['empl_id'];
+            $code = $row['empl_name'];
+            if($id == $pid){
+                $selected = "SELECTED = 'SELECTED'";
+            }else{
+                $selected = "";
+            }
+            $selectctrl .="<option value = '$id' $selected>$code</option>"; 
+        }
+        return $selectctrl;
+    }    
     //get client supervise applicant 
     public function getClientApplicantSelectCtrl($pid,$id,$shownull="Y",$wherestring=''){
         $sql = "SELECT applicant_id, applicant_name from db_applicant WHERE applicant_id = '$pid' or (applicant_leave_approved1 = '$id' or applicant_leave_approved2 = '$id' or applicant_leave_approved3 = '$id') and applicant_status = 1 ORDER BY applicant_name ASC"; 

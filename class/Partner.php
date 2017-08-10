@@ -265,7 +265,7 @@ class Partner {
         $this->currencyCrtl = $this->select->getCurrencySelectCtrl($this->partner_currency,'N');
         $this->debtorCrtl = $this->select->getAccountSelectCtrl($this->partner_debtor_account,'N');
         $this->creditorCrtl = $this->select->getAccountSelectCtrl($this->partner_creditor_account,'N');
-        $this->employeeCrtl = $this->select->getEmployeeSelectCtrl($this->partner_sales_person,'Y');
+        $this->employeeCrtl = $this->select->getSalesPersonCtrl($this->partner_sales_person,'Y');
         $this->industryCrtl = $this->select->getIndustrySelectCtrl($this->partner_industry,'Y');
         $this->addresstypeCrtl = $this->select->getAddressTypeSelectCtrl($this->partner_address_type,'N');
         $this->departmentCrtl = $this->getDepartment($this->empl_department);

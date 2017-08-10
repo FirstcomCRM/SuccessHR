@@ -458,9 +458,9 @@ class Applicant {
                 </div>
             </div>
             <div class='assign'>
-                <label for="assign_to" class="col-sm-2 control-label">Assign To</label>
+                <label for="assign_to2" class="col-sm-2 control-label">Assign To</label>
                 <div class="col-sm-3">
-                     <select class="form-control select2" id="assign_to" name="assign_to" style = 'width:100%' disabled>
+                     <select class="form-control select2" id="assign_to2" name="assign_to2" style = 'width:100%' readonly <?php if ($edit == "1"){echo "disabled";}?>>>
                          <option value="<?php echo $_SESSION['empl_id'];?>"><?php echo $_SESSION['empl_name'];?></option>
                      </select>
                 </div>
@@ -2586,6 +2586,11 @@ class Applicant {
                     data = data + "&interview_date="+$('#interview_date').val()+"&interview_company="+$('#interview_company').val()+"&interview_by="+$('#interview_by').val()+"&available_date="+$('#available_date').val()+"&position_offer="+$('#position_offer').val()+"&expected_salary="+$('#expected_salary').val()+"&offer_salary="+$('#offer_salary').val(); 
                     data = data + "&applicant_attend="+$('#applicant_attend').val()+"&received_offer="+$('#received_offer').val()+"&followup_comments="+command+"&follow_notice="+$('#follow_notice').val()+"&follow_id="+$('#follow_id').val();
                 }
+                else if ($('#follow_type').val()=='4'){
+                var data = "action=saveFollowup&applicant_id=<?php echo $this->applicant_id;?>&assign_to="+$('#assign_to2').val()+"&follow_type="+$('#follow_type').val()+"&interview_time=";
+                    data = data + "&interview_date="+"&interview_company="+"&interview_by="+"&available_date="+"&position_offer="+"&expected_salary="+"&offer_salary="; 
+                    data = data + "&applicant_attend="+"&received_offer="+"&followup_comments="+command+"&follow_notice="+$('#follow_notice').val()+"&follow_id="+$('#follow_id').val()+"&assign_manager="+$('#assign_manager').val();
+                }
                 else{
                 var data = "action=saveFollowup&applicant_id=<?php echo $this->applicant_id;?>&assign_to="+$('#assign_to').val()+"&follow_type="+$('#follow_type').val()+"&interview_time=";
                     data = data + "&interview_date="+"&interview_company="+"&interview_by="+"&available_date="+"&position_offer="+"&expected_salary="+"&offer_salary="; 
@@ -4612,7 +4617,12 @@ $message = ob_get_clean();
         $this->client_id = escape($_REQUEST['client_id']);
         $shownull =="Y";
         $data[0] ="<option value = '' SELECTED='SELECTED'>Select One</option>";
-        $sql = "SELECT job_id, job_title FROM db_jobs where (job_id = '$pid' or job_owner = '$this->client_id')";
+        if($pid >0){
+            $sql = "SELECT job_id, job_title FROM db_jobs where (job_id = '$pid' or job_owner = '$this->client_id')";
+        }else{
+            $sql = "SELECT job_id, job_title FROM db_jobs where (job_id = '$pid' or job_owner = '$this->client_id') AND job_status = 'A'";
+        }
+        
         $query = mysql_query($sql);
         $i = 1;
         while($row = mysql_fetch_array($query)){

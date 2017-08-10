@@ -94,7 +94,7 @@ class Empl {
                              'empl_resigndate','empl_confirmationdate','empl_mobile',
                              'empl_levy_amt','empl_pass_issuance','empl_pass_renewal',
                              'empl_language','empl_leave_approved1','empl_leave_approved2','empl_leave_approved3',
-                             'empl_claims_approved1','empl_claims_approved2','empl_claims_approved3',
+                             'empl_claims_approved1','empl_claims_approved2','empl_claims_approved3','empl_designation',
             
                              'empl_marital_status','empl_religion','empl_sex','empl_card',
                              'empl_iscpf','empl_cpf_account_no','empl_income_taxid','empl_race',
@@ -103,7 +103,7 @@ class Empl {
                              'empl_emer_address','empl_emer_remarks','empl_probation','empl_prdate','empl_resignreason',
                              'empl_paymode','empl_bank_acc_name','empl_work_permit','empl_work_permit_date_arrival',
                              'empl_work_permit_application_date','empl_numberofchildren','empl_isovertime',
-                             'empl_work_time_start','empl_work_time_end'
+                             'empl_work_time_start','empl_work_time_end','empl_extentionprobation'
             );
         $table_value = array(get_prefix_value("Empl code",true),$this->empl_name,$this->empl_nric,$this->empl_tel,format_date_database($this->empl_birthday),
                              $this->empl_group,$this->empl_manager,format_date_database($this->empl_joindate),$this->empl_postal_code,$this->empl_unit_no,
@@ -114,7 +114,7 @@ class Empl {
                              format_date_database($this->empl_resigndate),format_date_database($this->empl_confirmationdate),$this->empl_mobile,
                              $this->empl_levy_amt,format_date_database($this->empl_pass_issuance),format_date_database($this->empl_pass_renewal),
                              $this->empl_language,$this->empl_leave_approved1,$this->empl_leave_approved2,$this->empl_leave_approved3,
-                             $this->empl_claims_approved1,$this->empl_claims_approved2,$this->empl_claims_approved3,
+                             $this->empl_claims_approved1,$this->empl_claims_approved2,$this->empl_claims_approved3,$this->empl_designation,
 
                              $this->empl_marital_status,$this->empl_religion,$this->empl_sex,$this->empl_card,
                              $this->empl_iscpf,$this->empl_cpf_account_no,$this->empl_income_taxid,$this->empl_race,
@@ -123,7 +123,7 @@ class Empl {
                              $this->empl_emer_address,$this->empl_emer_remarks,$this->empl_probation,format_date_database($this->empl_prdate),$this->empl_resignreason,
                              $this->empl_paymode,$this->empl_bank_acc_name,$this->empl_work_permit,format_date_database($this->empl_work_permit_date_arrival),
                              format_date_database($this->empl_work_permit_application_date),$this->empl_numberofchildren,$this->empl_isovertime,
-                             $this->empl_work_time_start,$this->empl_work_time_end
+                             $this->empl_work_time_start,$this->empl_work_time_end, $this->empl_extentionprobation
             );
         $remark = "Update Employee.";
         if(!$this->save->UpdateData($table_field,$table_value,'db_empl','empl_id',$remark,$this->empl_id)){
@@ -357,13 +357,13 @@ class Empl {
         $this->designationCrtl = $this->select->getDesignationSelectCtrl($this->empl_designation);
         
         //empl group 1 = admin
-        $this->emplLeaveApproved1Crtl = $this->select->getEmployeeSelectCtrl($this->empl_leave_approved1,'Y'," AND empl_group = '1'");
-        $this->emplLeaveApproved2Crtl = $this->select->getEmployeeSelectCtrl($this->empl_leave_approved2,'Y'," AND empl_group = '1'");
-        $this->emplLeaveApproved3Crtl = $this->select->getEmployeeSelectCtrl($this->empl_leave_approved3,'Y'," AND empl_group = '1'");
+        $this->emplLeaveApproved1Crtl = $this->select->getApprovedEmployeeSelectCtrl($this->empl_leave_approved1,'Y'," AND empl_group = '1'");
+        $this->emplLeaveApproved2Crtl = $this->select->getApprovedEmployeeSelectCtrl($this->empl_leave_approved2,'Y'," AND empl_group = '1'");
+        $this->emplLeaveApproved3Crtl = $this->select->getApprovedEmployeeSelectCtrl($this->empl_leave_approved3,'Y'," AND empl_group = '1'");
         
-        $this->emplClaimsApproved1Crtl = $this->select->getEmployeeSelectCtrl($this->empl_claims_approved1,'Y'," AND empl_group = '1'");
-        $this->emplClaimsApproved2Crtl = $this->select->getEmployeeSelectCtrl($this->empl_claims_approved2,'Y'," AND empl_group = '1'");
-        $this->emplClaimsApproved3Crtl = $this->select->getEmployeeSelectCtrl($this->empl_claims_approved3,'Y'," AND empl_group = '1'");
+        $this->emplClaimsApproved1Crtl = $this->select->getApprovedEmployeeSelectCtrl($this->empl_claims_approved1,'Y'," AND empl_group = '1'");
+        $this->emplClaimsApproved2Crtl = $this->select->getApprovedEmployeeSelectCtrl($this->empl_claims_approved2,'Y'," AND empl_group = '1'");
+        $this->emplClaimsApproved3Crtl = $this->select->getApprovedEmployeeSelectCtrl($this->empl_claims_approved3,'Y'," AND empl_group = '1'");
         
     ?>
    <html>
@@ -641,6 +641,12 @@ class Empl {
                 
             });
             
+            if($('#empl_group').val() == "8"){
+                 $('.manager').show();
+            }
+            else{
+                 $('.manager').hide();
+            }
             
             
 });
@@ -1065,7 +1071,7 @@ function getBankCode(bank){
             <label for="empl_extentionprobation" class="col-sm-2 control-label">Extention of Probation</label>
             <div class="col-sm-3">
                 <select class="form-control " id="empl_extentionprobation" name="empl_extentionprobation">
-                    <option value = '0' <?php if($this->empl_extentionprobation == 1){ echo 'SELECTED';}?>>Select One</option>
+                    <option value = '0' <?php if($this->empl_extentionprobation == 0){ echo 'SELECTED';}?>>Select One</option>
                     <option value = '1' <?php if($this->empl_extentionprobation == 1){ echo 'SELECTED';}?>>1</option>
                     <option value = '2' <?php if($this->empl_extentionprobation == 2){ echo 'SELECTED';}?>>2</option>
                     <option value = '3' <?php if($this->empl_extentionprobation == 3){ echo 'SELECTED';}?>>3</option>
@@ -1092,7 +1098,7 @@ function getBankCode(bank){
             </div>
             <label for="empl_resignreason" class="col-sm-2 control-label">Terminate Reason</label>
             <div class="col-sm-3">
-                  <textarea class="form-control" rows="3" id="empl_resignreason" name="empl_resignreason" placeholder="Terminate Reason"><?php echo $this->empl_remark;?></textarea>
+                  <textarea class="form-control" rows="3" id="empl_resignreason" name="empl_resignreason" placeholder="Terminate Reason"><?php echo $this->empl_resignreason;?></textarea>
             </div>
         </div>
         <h3><u>Alert Supervisor</u></h3>
@@ -1268,7 +1274,7 @@ function getBankCode(bank){
         <div class="form-group">
             <label for="empl_work_permit_application_date" class="col-sm-2 control-label">Application Date</label>
             <div class="col-sm-3">
-                <input type="text" class="form-control datepicker" id="empl_work_permit_application_date" name="empl_work_permit_application_date" value = "<?php echo $this->empl_work_permit_application_date;?>" placeholder="Application Date">
+                <input type="text" class="form-control datepicker" id="empl_work_permit_application_date" name="empl_work_permit_application_date" value = "<?php echo format_date($this->empl_work_permit_application_date);?>" placeholder="Application Date">
             </div>
             <label for="empl_pass_issuance" class="col-sm-2 control-label">Issue Date</label>
             <div class="col-sm-3">

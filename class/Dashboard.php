@@ -418,7 +418,6 @@ class Dashboard {
                     
                     
                     if( jsonObj['aRemarks']!=null){
-                        table_head = "<h4>"+jsonObj['aRemarks']['empl_name'][0]+"</h4>";
                         table = "<h4>"+jsonObj['aRemarks']['empl_name'][0]+"</h4><table class= 'table table-bordered table-hover' id='app_remark_table'" + "><thead><tr> <th style = 'width:2%'>No</th>";
                         table = table + "<th style = 'width:5%'>Candidate</th><th style = 'width:5%'>Client</th><th style = 'width:5%'>Follow Type</th><th style = 'width:15%'>Description</th>";
                         table = table + "<th style = 'width:5%'>Time & Date</th></tr></thead><tbody>";
@@ -444,7 +443,7 @@ class Dashboard {
                         var pn = 1;
                         for(var i=0;i<jsonObj['applicant']['applicant_name'].length;i++){
                         activeApplTable = activeApplTable + "<tr id='" + jsonObj['applicant']['applicant_id'][i] + "'><td><a href='applicant.php?action=edit&applicant_id=" + jsonObj['applicant']['applicant_id'][i] + "'>" + pn + "</a></td><td>" + jsonObj['applicant']['applicant_name'][i] + "</td><td>" + jsonObj['applicant']['applicant_mobile'][i] + "</td><td>" + jsonObj['applicant']['applicant_email'][i] + "</td>";
-                        activeApplTable = activeApplTable + "<td><button type='button' class='btn btn-warning btn-client showremarks' data-toggle='tooltip' title='Show Remark' style='margin-right: 2px' pid='&string=and a.applicant_id=" + jsonObj['applicant']['applicant_id'][i] +"' id = '" + jsonObj['aRemarks']['empl_id'][0] + "'>R</button>";
+                        activeApplTable = activeApplTable + "<td><button type='button' class='btn btn-warning btn-client showremarks' data-toggle='tooltip' title='Show All Remark' style='margin-right: 2px' pid='&string=and a.applicant_id=" + jsonObj['applicant']['applicant_id'][i] +"' id = '" + jsonObj['aRemarks']['empl_id'][0] + "'>R</button>";
                         activeApplTable = activeApplTable + "<button type='button' class='btn btn-info btn-client showremarks' data-toggle='tooltip' title='Show Interview' style='margin-right: 2px' pid='&string=and a.applicant_id=" + jsonObj['applicant']['applicant_id'][i] + " and f.follow_type=2' id = '" + jsonObj['aRemarks']['empl_id'][0] + "'>I</button>";
                         activeApplTable = activeApplTable + "<button type='button' class='btn btn-success btn-client showremarks' data-toggle='tooltip' title='Assigned' style='margin-right: 2px' pid='&string=and a.applicant_id=" + jsonObj['applicant']['applicant_id'][i] + " and f.follow_type=0' id = '" + jsonObj['aRemarks']['empl_id'][0] + "'>S</button>";
                         activeApplTable = activeApplTable + "<button type='button' class='btn btn-danger btn-client delete' data-toggle='tooltip' title='Clear' style='margin-right: 2px' pid='" + jsonObj['applicant']['follow_id'][i] + "'><i class='fa fa-dw fa-close'></i></button></td></tr>";
@@ -533,16 +532,16 @@ class Dashboard {
 
 
                                 if( jsonObj['aRemarks']!=null){
-                                    table_head = "<h4>"+jsonObj['aRemarks']['empl_name'][0]+"</h4>";
-                                    table = "<h4>"+jsonObj['aRemarks']['empl_name'][0]+"</h4><table class= 'table table-bordered table-hover' id='app_remark_table'" + "><thead><tr> <th style = 'width:2%'>No</th>";
-                                    table = table + "<th style = 'width:5%'>Candidate</th><th style = 'width:5%'>Client</th><th style = 'width:5%'>Follow Type</th><th style = 'width:15%'>Description</th>";
+                                    
+                                    table = "<h4>"+jsonObj['aRemarks']['empl_name'][0] + " - Candidate ( "+ jsonObj['aRemarks']['applicant_name'][0] +" )"+"</h4><table class= 'table table-bordered table-hover' id='app_remark_table'" + "><thead><tr> <th style = 'width:2%'>No</th>";
+                                    table = table + "<th style = 'width:5%'>Client</th><th style = 'width:5%'>Follow Type</th><th style = 'width:15%'>Description</th>";
                                     table = table + "<th style = 'width:5%'>Time & Date</th></tr></thead><tbody>";
                                 var n = 1; 
                                 for(var i=0;i<jsonObj['aRemarks']['applicant_name'].length;i++){
-                                    table = table + "<tr><td><a href='applicant.php?action=edit&current_tab=followup&applicant_id=" + jsonObj['aRemarks']['applicant_id'][i] + "&follow_id=" + jsonObj['aRemarks']['follow_id'][i] + "'>" + n +"</a></td><td>" + jsonObj['aRemarks']['applicant_name'][i] + "</td><td>" + jsonObj['aRemarks']['interview_company'][i] + "</td><td>" + jsonObj['aRemarks']['follow_type'][i] + "</td><td>" + jsonObj['aRemarks']['comments'][i] + "</td><td>" + jsonObj['aRemarks']['time'][i] +"<br>" + jsonObj['aRemarks']['date'][i] + "</td></tr>"; 
+                                    table = table + "<tr><td><a href='applicant.php?action=edit&current_tab=followup&applicant_id=" + jsonObj['aRemarks']['applicant_id'][i] + "&follow_id=" + jsonObj['aRemarks']['follow_id'][i] + "'>" + n +"</a></td><td>" + jsonObj['aRemarks']['interview_company'][i] + "</td><td>" + jsonObj['aRemarks']['follow_type'][i] + "</td><td>" + jsonObj['aRemarks']['comments'][i] + "</td><td>" + jsonObj['aRemarks']['time'][i] +"<br>" + jsonObj['aRemarks']['date'][i] + "</td></tr>"; 
                                     n++;
                                     }
-                                    table = table + "</tbody><tfoot><tr> <th style = 'width:2%'>No</th><th style = 'width:5%'>Candidate</th><th style = 'width:5%'>Client</th>";
+                                    table = table + "</tbody><tfoot><tr> <th style = 'width:2%'>No</th><th style = 'width:5%'>Client</th>";
                                            table = table + "<th style = 'width:5%'>Follow Type</th><th style = 'width:15%'>Description</th><th style = 'width:5%'>Time & Date</th></tr></tfoot></table>";
 
                                 }
@@ -626,15 +625,15 @@ class Dashboard {
                             if(jsonObj['aRemarks'] != null)
                              {
                                   //table ="<a href='applicant.php?action=edit&current_tab=followup&applicant_id=" + jsonObj['aRemarks']['applicant_id'][0] + "'><button type='button' class='btn btn-info' style= 'float:right'>Add Remarks</button></a><br><br>";
-                           table = table + "<h4>Candidate (" + jsonObj['aRemarks']['applicant_name'][0] +") Remark</h4><table id='" + "applicant_remark_table' " + "class=" + "'table table-bordered table-hover'" + "><thead><tr> <th style = 'width:2%'>No</th><th style = 'width:5%'>Create By</th><th style = 'width:5%'>Assign</th>";
+                           table = table + "<h4>Candidate (" + jsonObj['aRemarks']['applicant_name'][0] +") Remark</h4><table id='" + "applicant_remark_table' " + "class=" + "'table table-bordered table-hover'" + "><thead><tr> <th style = 'width:2%'>No</th><th style = 'width:5%'>Create By</th>";
                                table = table + "<th style = 'width:5%'>Client</th><th style = 'width:7%'>Remark Type</th><th style = 'width:15%'>Comments</th><th style = 'width:5%'>Status</th><th style = 'width:5%'>Create Time & Date</th></tr></thead><tbody>";
 
                             var n = 1;
                         for(var i=0;i<jsonObj['aRemarks']['empl_name'].length;i++){
-                        table = table + "<tr><td>" + "<a href='applicant.php?action=edit&current_tab=followup&applicant_id=" + jsonObj['aRemarks']['applicant_id'][i] + "&follow_id=" + jsonObj['aRemarks']['follow_id'][i] + "&edit=" + jsonObj['aRemarks']['edit'][i] + "'>" + n + "</a></td><td>" + jsonObj['aRemarks']['empl_name'][i] +"</td><td>" + jsonObj['aRemarks']['assign_to'][i] + "</td><td>" + jsonObj['aRemarks']['interview_company'][i] + "</td><td>" + jsonObj['aRemarks']['follow_type'][i] + "</td><td>" + jsonObj['aRemarks']['comments'][i] + "</td><td>" + jsonObj['aRemarks']['status'][i] + "</td><td>" + jsonObj['aRemarks']['time'][i] + " " + jsonObj['aRemarks']['date'][i] + "</td></tr>" 
+                        table = table + "<tr><td>" + "<a href='applicant.php?action=edit&current_tab=followup&applicant_id=" + jsonObj['aRemarks']['applicant_id'][i] + "&follow_id=" + jsonObj['aRemarks']['follow_id'][i] + "&edit=" + jsonObj['aRemarks']['edit'][i] + "'>" + n + "</a></td><td>" + jsonObj['aRemarks']['empl_name'][i] +"</td><td>" + jsonObj['aRemarks']['interview_company'][i] + "</td><td>" + jsonObj['aRemarks']['follow_type'][i] + "</td><td>" + jsonObj['aRemarks']['comments'][i] + "</td><td>" + jsonObj['aRemarks']['status'][i] + "</td><td>" + jsonObj['aRemarks']['time'][i] + " " + jsonObj['aRemarks']['date'][i] + "</td></tr>" 
                         n++;
                         }
-                        table = table + "</tbody><tfoot><tr> <th style = 'width:2%'>No</th><th style = 'width:5%'>Create By</th><th style = 'width:5%'>Assign</th>";
+                        table = table + "</tbody><tfoot><tr> <th style = 'width:2%'>No</th><th style = 'width:5%'>Create By</th>";
                                table = table + "<th style = 'width:5%'>Client</th><th style = 'width:7%'>Remark Type</th><th style = 'width:15%'>Comments</th><th style = 'width:5%'>Status</th><th style = 'width:5%'>Create Time & Date</th></tr></tfoot></table>";
                            }
                         else
@@ -2087,6 +2086,7 @@ if($row['leavetype_id'] == 1){
            return true;
         }
     }
+    
     public function getApplicantRemarks(){
         global $notification_desc; 
 //            $sql = "select * from db_followup where insertby = '$this->empl_id'";
@@ -2149,7 +2149,7 @@ if($row['leavetype_id'] == 1){
         return $data;
     }
     public function getActiveApplicant(){
-        $sql = "SELECT a.*, f.follow_id, left(f.insertDateTime, 10) as date, right(f.insertDateTime,8) as time FROM db_applicant a INNER JOIN db_followup f ON a.applicant_id = f.applfollow_id WHERE f.follow_type = '3' AND f.assign_to = '$this->empl_id' AND f.fol_status = '0' ORDER BY YEAR(date) DESC, MONTH(date) DESC, DAY(date) DESC, time DESC";
+        $sql = "SELECT a.*, f.follow_id, left(f.insertDateTime, 10) as date, right(f.insertDateTime,8) as time FROM db_applicant a INNER JOIN db_followup f ON a.applicant_id = f.applfollow_id WHERE (f.follow_type = '3' or f.follow_type = '4') AND f.assign_to = '$this->empl_id' AND f.fol_status = '0' ORDER BY YEAR(date) DESC, MONTH(date) DESC, DAY(date) DESC, time DESC";
           //$sql = "select left(p.insertDateTime, 10) as date, right(p.insertDateTime,8) as time, p.pfollow_description, pt.partner_name, e.empl_name, pt.partner_id, p.pfollow_id from db_partnerfollow p inner join db_partner pt inner join db_empl e on p.partner_id = pt.partner_id and e.empl_id = p.insertBy where p.insertBy = '$this->empl_id' ORDER BY YEAR(date) DESC, MONTH(date) DESC, DAY(date) DESC, time DESC";
         $query = mysql_query($sql);
         
@@ -2276,6 +2276,7 @@ if($row['leavetype_id'] == 1){
                   </table>
                 </div><!-- /.box-body -->
     <?php }
+    
     public function getCalender(){
             ?>
        <!-- Main content -->
@@ -2384,64 +2385,6 @@ if($row['leavetype_id'] == 1){
         
         
   <?php
-    }
-    public function saveAttendance(){
-        $this->empl_id = $_SESSION['empl_id'];
-        $this->attendance_time_start = format_date_database(escape($_REQUEST['datefrom']));
-//        $this->attendance_time_end = format_date_database(escape($_REQUEST['dateto']));
-        $this->lunchHour = escape($_REQUEST['lunchhour']);
-        $this->overtimeHour = escape($_REQUEST['overtimehour']);
-        $this->timeIn = escape($_REQUEST['timein']);
-        $this->timeOut = escape($_REQUEST['timeout']);
-
-            $sql = "SELECT * FROM db_attendance WHERE attendance_empl = '$_SESSION[empl_id]' AND attendance_date_start = '$this->attendance_time_start'";
-            $query = mysql_query($sql);
-            $row = mysql_num_rows($query);
-            if ($row > 0){
-                return false;
-            }else{
-                $table_field = array('attendance_id','attendance_empl','attendance_date_start','attendance_date_end','attendance_remark',
-                                     'attendance_lunch_hour','attendance_ot_hour','attendance_timein','attendance_timeout','attendance_status');
-                $table_value = array('',$this->empl_id ,$this->attendance_time_start,$this->attendance_time_start,"Attendance",
-                                     $this->lunchHour, $this->overtimeHour, $this->timeIn, $this->timeOut ,1);
-                $remark = "Create Attendance.";
-                if(!$this->save->SaveData($table_field,$table_value,'db_attendance','attendance_id',$remark)){
-                    return false;
-                }
-                else{
-                    return true;
-                }     
-        }   
-    }
-    public function updateAttendance(){
-        $this->empl_id = $_SESSION['empl_id'];
-        $this->attendance_time_start = format_date_database(escape($_REQUEST['datefrom']));
-        $this->attendance_time_end = format_date_database(escape($_REQUEST['dateto']));
-        $this->lunchHour = escape($_REQUEST['lunchhour']);
-        $this->overtimeHour = escape($_REQUEST['overtimehour']);
-        $this->attendance_remark = escape($_REQUEST['attendance_remark']);
-        $this->timeIn = escape($_REQUEST['timein']);
-        $this->timeOut = escape($_REQUEST['timeout']);
-        $this->attendance_id = escape($_REQUEST['attendance_id']);
-        
-            $sql = "SELECT * FROM db_attendance WHERE attendance_empl = '$_SESSION[empl_id]' AND attendance_date_start = '$this->attendance_time_start'";
-            $query = mysql_query($sql);
-            $row = mysql_num_rows($query);
-            if ($row > 0){
-                return false;
-            }else{
-                $table_field = array('attendance_date_start','attendance_date_end','attendance_remark',
-                                     'attendance_lunch_hour','attendance_ot_hour','attendance_timein','attendance_timeout','attendance_remark');
-                $table_value = array($this->attendance_time_start,$this->attendance_time_end,'Attendance',
-                                     $this->lunchHour, $this->overtimeHour, $this->timeIn, $this->timeOut,$this->attendance_remark);
-            
-                $remark = "Update Attendance";
-                if(!$this->save->UpdateData($table_field,$table_value,'db_attendance','attendance_id',$remark,$this->attendance_id,"")){
-                   return false;
-                }else{
-                   return true;
-                }
-            }
     }
     public function getCalendarDetail(){
         $startDate = $_GET['start'];
@@ -2738,6 +2681,66 @@ if($row['leavetype_id'] == 1){
         }      
         return $data;
     }
+    
+    public function saveAttendance(){
+        $this->empl_id = $_SESSION['empl_id'];
+        $this->attendance_time_start = format_date_database(escape($_REQUEST['datefrom']));
+//        $this->attendance_time_end = format_date_database(escape($_REQUEST['dateto']));
+        $this->lunchHour = escape($_REQUEST['lunchhour']);
+        $this->overtimeHour = escape($_REQUEST['overtimehour']);
+        $this->timeIn = escape($_REQUEST['timein']);
+        $this->timeOut = escape($_REQUEST['timeout']);
+
+            $sql = "SELECT * FROM db_attendance WHERE attendance_empl = '$_SESSION[empl_id]' AND attendance_date_start = '$this->attendance_time_start'";
+            $query = mysql_query($sql);
+            $row = mysql_num_rows($query);
+            if ($row > 0){
+                return false;
+            }else{
+                $table_field = array('attendance_id','attendance_empl','attendance_date_start','attendance_date_end','attendance_remark',
+                                     'attendance_lunch_hour','attendance_ot_hour','attendance_timein','attendance_timeout','attendance_status');
+                $table_value = array('',$this->empl_id ,$this->attendance_time_start,$this->attendance_time_start,"Attendance",
+                                     $this->lunchHour, $this->overtimeHour, $this->timeIn, $this->timeOut ,1);
+                $remark = "Create Attendance.";
+                if(!$this->save->SaveData($table_field,$table_value,'db_attendance','attendance_id',$remark)){
+                    return false;
+                }
+                else{
+                    return true;
+                }     
+        }   
+    }
+    public function updateAttendance(){
+        $this->empl_id = $_SESSION['empl_id'];
+        $this->attendance_time_start = format_date_database(escape($_REQUEST['datefrom']));
+        $this->attendance_time_end = format_date_database(escape($_REQUEST['dateto']));
+        $this->lunchHour = escape($_REQUEST['lunchhour']);
+        $this->overtimeHour = escape($_REQUEST['overtimehour']);
+        $this->attendance_remark = escape($_REQUEST['attendance_remark']);
+        $this->timeIn = escape($_REQUEST['timein']);
+        $this->timeOut = escape($_REQUEST['timeout']);
+        $this->attendance_id = escape($_REQUEST['attendance_id']);
+        
+            $sql = "SELECT * FROM db_attendance WHERE attendance_empl = '$_SESSION[empl_id]' AND attendance_date_start = '$this->attendance_time_start'";
+            $query = mysql_query($sql);
+            $row = mysql_num_rows($query);
+            if ($row > 0){
+                return false;
+            }else{
+                $table_field = array('attendance_date_start','attendance_date_end','attendance_remark',
+                                     'attendance_lunch_hour','attendance_ot_hour','attendance_timein','attendance_timeout','attendance_remark');
+                $table_value = array($this->attendance_time_start,$this->attendance_time_end,'Attendance',
+                                     $this->lunchHour, $this->overtimeHour, $this->timeIn, $this->timeOut,$this->attendance_remark);
+            
+                $remark = "Update Attendance";
+                if(!$this->save->UpdateData($table_field,$table_value,'db_attendance','attendance_id',$remark,$this->attendance_id,"")){
+                   return false;
+                }else{
+                   return true;
+                }
+            }
+    }
+
     public function getPayrollForm(){
         ?>
             <div class="col-md-9">
@@ -3610,7 +3613,7 @@ if($row['leavetype_id'] == 1){
                 
                     <div class="box box-success">
                         <div class="box-header with-border">
-                          <h3 class="box-title">Latest Remarks</h3>
+                          <h3 class="box-title" id="follow_type">Latest Remarks</h3>
                           <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                           </div>

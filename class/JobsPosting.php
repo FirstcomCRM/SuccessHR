@@ -1140,9 +1140,8 @@ function getBankCode(bank){
                                 ?>
                             </td>     
                             <td>
-                               <?php if ($row['job_status'] == "P"){ echo "Public";}
-                                else if($row['job_status'] == "D"){ echo "Draft";}
-                                else {echo "Close";}?>
+                               <?php if ($row['job_status'] == "A"){?> <p> Active</p><?php }
+                                else {?> <p style="color:red"> Close</p><?php }?>
                             </td>
                             <td>
                                 <?php if ($row['job_type'] == "P"){ echo "Part Time";}
