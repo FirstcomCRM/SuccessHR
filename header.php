@@ -43,7 +43,7 @@
                             $sql = "SELECT applicant.*, LEFT(follow.insertDateTime, 10) as Date, right(follow.insertDateTime, 8) as Time FROM db_applicant applicant join db_followup follow on applicant_id = applfollow_id WHERE follow.follow_type AND follow.assign_to = '$_SESSION[empl_id]' AND follow.fol_status = '0' ORDER BY YEAR(date) DESC, MONTH(date) DESC, DAY(date) DESC, time DESC";
                         }
                         if($_SESSION['empl_group'] == '4'){
-                            $sql = "SELECT applicant.*, LEFT(follow.insertDateTime, 10) as Date, right(follow.insertDateTime, 8) as Time FROM db_applicant applicant join db_followup follow on applicant_id = applfollow_id INNER JOIN db_empl e ON follow.insertBy = e.empl_id WHERE follow.follow_type AND (follow.assign_to = '$_SESSION[empl_id]' OR e.empl_manager = '$_SESSION[empl_id]') AND follow.fol_status = '0' ORDER BY YEAR(date) DESC, MONTH(date) DESC, DAY(date) DESC, time DESC";
+                            $sql = "SELECT f.* FROM db_followup f INNER JOIN db_empl e ON e.empl_id = f.insertBy WHERE f.follow_type = '2' AND f.interview_date = '$todayDate' AND f.fol_status = '0' AND (e.empl_manager = '$_SESSION[empl_id]' OR e.empl_id = '$_SESSION[empl_id]')";
                         }
                         $query = mysql_query($sql);
                         while($row = mysql_fetch_array($query)){
@@ -146,10 +146,10 @@
                            <?php 
                                 $todayDate = date("Y-m-d");
                                 if($_SESSION['empl_group'] == '8'){
-                                    $sql = "SELECT applicant.*, LEFT(follow.insertDateTime, 10) as Date, right(follow.insertDateTime, 8) as Time FROM db_applicant applicant join db_followup follow on applicant_id = applfollow_id WHERE follow.follow_type AND follow.assign_to = '$_SESSION[empl_id]' AND follow.fol_status = '0' ORDER BY YEAR(date) DESC, MONTH(date) DESC, DAY(date) DESC, time DESC";
+                                    $sql = "SELECT * FROM db_followup WHERE follow_type = '2' AND interview_date = '$todayDate' AND insertBy = '$_SESSION[empl_id]' AND fol_status = '0'";
                                 }
                                 if($_SESSION['empl_group'] == '4'){
-                                    $sql = "SELECT applicant.*, LEFT(follow.insertDateTime, 10) as Date, right(follow.insertDateTime, 8) as Time FROM db_applicant applicant join db_followup follow on applicant_id = applfollow_id INNER JOIN db_empl e ON follow.insertBy = e.empl_id WHERE follow.follow_type AND (follow.assign_to = '$_SESSION[empl_id]' OR e.empl_manager = '$_SESSION[empl_id]') AND follow.fol_status = '0' ORDER BY YEAR(date) DESC, MONTH(date) DESC, DAY(date) DESC, time DESC";
+                                    $sql = "SELECT f.* FROM db_followup f INNER JOIN db_empl e ON e.empl_id = f.insertBy WHERE f.follow_type = '2' AND f.interview_date = '$todayDate' AND f.fol_status = '0' AND (e.empl_manager = '$_SESSION[empl_id]' OR e.empl_id = '$_SESSION[empl_id]')";
                                 }
                                 $query = mysql_query($sql);
                                 $row = mysql_num_rows($query);
