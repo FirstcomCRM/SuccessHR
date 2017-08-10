@@ -1,0 +1,104 @@
+				<html xmlns:o="urn:schemas-microsoft-com:office:office"
+				xmlns:x="urn:schemas-microsoft-com:office:excel"
+				xmlns="http://www.w3.org/TR/REC-html40">
+
+				<head>
+				<meta http-equiv=Content-Type content="text/html; charset=us-ascii">
+				<meta name=ProgId content=Excel.Sheet>
+				<!--[if gte mso 9]><xml>
+				 <o:DocumentProperties>
+				  <o:LastAuthor>Sriram</o:LastAuthor>
+				  <o:LastSaved>2005-01-02T07:46:23Z</o:LastSaved>
+				  <o:Version>10.2625</o:Version>
+				 </o:DocumentProperties>
+				 <o:OfficeDocumentSettings>
+				  <o:DownloadComponents/>
+				 </o:OfficeDocumentSettings>
+				</xml><![endif]-->
+				<style>
+				<!--table
+					{mso-displayed-decimal-separator:"\.";
+					mso-displayed-thousand-separator:"\,";}
+				@page
+					{margin:1.0in .75in 1.0in .75in;
+					mso-header-margin:.5in;
+					mso-footer-margin:.5in;}
+				tr
+					{mso-height-source:auto;}
+				col
+					{mso-width-source:auto;}
+				br
+					{mso-data-placement:same-cell;}
+				.style0
+					{mso-number-format:General;
+					text-align:general;
+					vertical-align:bottom;
+					white-space:nowrap;
+					mso-rotate:0;
+					mso-background-source:auto;
+					mso-pattern:auto;
+					color:windowtext;
+					font-size:10.0pt;
+					font-weight:400;
+					font-style:normal;
+					text-decoration:none;
+					font-family:Arial;
+					mso-generic-font-family:auto;
+					mso-font-charset:0;
+					border:none;
+					mso-protection:locked visible;
+					mso-style-name:Normal;
+					mso-style-id:0;}
+				td
+					{mso-style-parent:style0;
+					padding-top:1px;
+					padding-right:1px;
+					padding-left:1px;
+					mso-ignore:padding;
+					color:windowtext;
+					font-size:10.0pt;
+					font-weight:400;
+					font-style:normal;
+					text-decoration:none;
+					font-family:Arial;
+					mso-generic-font-family:auto;
+					mso-font-charset:0;
+					mso-number-format:General;
+					text-align:general;
+					vertical-align:bottom;
+					border:none;
+					mso-background-source:auto;
+					mso-pattern:auto;
+					mso-protection:locked visible;
+					white-space:nowrap;
+					mso-rotate:0;}
+				.xl24
+					{mso-style-parent:style0;
+					white-space:normal;}
+				-->
+				</style>
+				<!--[if gte mso 9]><xml>
+				 <x:ExcelWorkbook>
+				  <x:ExcelWorksheets>
+				   <x:ExcelWorksheet>
+					<x:Name>srirmam</x:Name>
+					<x:WorksheetOptions>
+					 <x:Selected/>
+					 <x:ProtectContents>False</x:ProtectContents>
+					 <x:ProtectObjects>False</x:ProtectObjects>
+					 <x:ProtectScenarios>False</x:ProtectScenarios>
+					</x:WorksheetOptions>
+				   </x:ExcelWorksheet>
+				  </x:ExcelWorksheets>
+				  <x:WindowHeight>10005</x:WindowHeight>
+				  <x:WindowWidth>10005</x:WindowWidth>
+				  <x:WindowTopX>120</x:WindowTopX>
+				  <x:WindowTopY>135</x:WindowTopY>
+				  <x:ProtectStructure>False</x:ProtectStructure>
+				  <x:ProtectWindows>False</x:ProtectWindows>
+				 </x:ExcelWorkbook>
+				</xml><![endif]-->
+				</head>
+
+				<body link=blue vlink=purple>
+				<table x:str border=0 cellpadding=0 cellspacing=0 style='border-collapse: collapse;table-layout:fixed;'><tr><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>No</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Name</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Nric / Fin no</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>SIP / Adhoc</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Duration</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>University</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Division / Department</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Undergrad / Postgrad</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Daily Rate</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>No. of Worked Days</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>No. of Required Days</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Monthly Salary</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Rate Per Hour</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Normal Hours (1x)</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Normal Amount (1x) Non CPF</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Normal Amount (1x) CPF</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>OT Hours (1.5x)</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>OT Amount (1.5x) Non CPF</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>OT Amount (1.5x) CPF</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>OT Hours (2x)</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>OT Amount (2x) Non CPF</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>OT Amount (2x) CPF</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Additional</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Additional CPF</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Deductions</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Deductions CPF</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Total CPF</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>SUB TOTAL</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Admin Fee</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Invoice Amount</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>GST (7.00 %)</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Total Invoice Amount</td></tr><tr><td class=xl24 width=64 style='text-align:center;color:black;'>1</td><td class=xl24 width=64 style='text-align:center;color:black;'>Wei Yang</td><td class=xl24 width=64 style='text-align:center;color:black;'>22366225</td><td class=xl24 width=64 style='text-align:center;color:black;'></td><td class=xl24 width=64 style='text-align:center;color:black;'>01-Aug-2017 to 31-Aug-2017</td><td class=xl24 width=64 style='text-align:center;color:black;'></td><td class=xl24 width=64 style='text-align:center;color:black;'>IT technician</td><td class=xl24 width=64 style='text-align:center;color:black;'></td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 92</td><td class=xl24 width=64 style='text-align:center;color:black;'>0 day</td><td class=xl24 width=64 style='text-align:center;color:black;'>25 day</td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 2300.00</td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 11.5</td><td class=xl24 width=64 style='text-align:center;color:black;'>8 Hour</td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 0</td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 0</td><td class=xl24 width=64 style='text-align:center;color:black;'>0 Hour</td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 0</td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 0</td><td class=xl24 width=64 style='text-align:center;color:black;'> Hour</td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 0</td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 0</td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 0.00</td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 0</td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 0.00</td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 0</td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 0.00</td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 2300.00</td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 250.00</td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 2550</td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 178.5</td><td class=xl24 width=64 style='text-align:center;color:black;'>$ 2728.5</td></tr><tr><tr><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>Total Amount</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>$ 2300</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'></td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>$ 0</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>$ 0</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>$ 0</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>$ 0</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>$ 0</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>$ 2300</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>$ 250</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>$ 2550</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>$ 178.5</td><td class=xl24 width=64 style='text-align:center;color:black;font-weight:bold;'>$ 2728.5</td></tr>
