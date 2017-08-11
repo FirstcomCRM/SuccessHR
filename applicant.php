@@ -166,6 +166,7 @@
     $o->family_occupation = escape($_POST['family_occupation']);
     $o->applicant_family_id = escape($_POST['applicant_family_id']);
 
+    //follow up
     $o->assign_to = escape($_POST['assign_to']);
     $o->follow_type = escape($_POST['follow_type']);
     $o->interview_time = escape($_POST['interview_time']);
@@ -197,6 +198,7 @@
     $o->fol_probation_period = escape($_POST['probation_period']);
     $o->fol_job_type = escape($_POST['job_type']);
     $o->fol_approved = escape($_POST['fol_approved']);
+    $o->not_suitable = escape($_POST['not_suitable']);
     
     $o->previous_company = escape($_POST['previous_company']);
     $o->previous_position = escape($_POST['previous_position']);
