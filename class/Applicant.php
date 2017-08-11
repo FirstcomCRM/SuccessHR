@@ -23,7 +23,7 @@ class Applicant {
         $table_field = array('applicant_code','applicant_name','applicant_nric','applicant_tel','applicant_birthday',
                              'applicant_group','applicant_joindate','applicant_postal_code','applicant_unit_number',
                              'applicant_street','applicant_postal_code2','applicant_unit_number2','applicant_street2','applicant_black_list',
-                             'applicant_height', 'applicant_weight',
+                             'applicant_height', 'applicant_weight', 'applicant_applpass',
                              'applicant_login_email','applicant_login_password','applicant_seqno','applicant_status',
                              'applicant_outlet','applicant_email','applicant_department','applicant_bank',
                              'applicant_bank_acc_no','applicant_nationality',
@@ -50,7 +50,7 @@ class Applicant {
         $table_value = array(get_prefix_value("Applicant code",true),$this->applicant_name,$this->applicant_nric,$this->applicant_tel,format_date_database($this->applicant_birthday),
                              5,format_date_database($this->applicant_joindate),$this->applicant_postal_code,$this->applicant_unit_no,$this->applicant_address,
                              $this->applicant_postal_code2,$this->applicant_unit_no2,$this->applicant_address2,$this->applicant_black_list,
-                             $this->applicant_height, $this->applicant_weight,
+                             $this->applicant_height, $this->applicant_weight,$this->applicant_applicantpass,
                              $this->applicant_login_email,$this->applicant_login_password,$this->applicant_seqno,$this->applicant_status,
                              $this->applicant_outlet,$this->applicant_email,$this->applicant_department,$this->applicant_bank,
                              $this->applicant_bank_acc_no,$this->applicant_nationality,
@@ -111,7 +111,7 @@ class Applicant {
         $table_field = array('applicant_code','applicant_name','applicant_nric','applicant_tel','applicant_birthday',
                              'applicant_group','applicant_joindate','applicant_postal_code','applicant_unit_number',
                              'applicant_street','applicant_postal_code2','applicant_unit_number2','applicant_street2','applicant_black_list',
-                             'applicant_height', 'applicant_weight',
+                             'applicant_height', 'applicant_weight', 'applicant_applpass',
                              'applicant_login_email','applicant_login_password','applicant_seqno','applicant_status',
                              'applicant_outlet','applicant_email','applicant_department','applicant_bank',
                              'applicant_bank_acc_no','applicant_nationality',
@@ -139,7 +139,7 @@ class Applicant {
         $table_value = array(get_prefix_value("Applicant code",true),$this->applicant_name,$this->applicant_nric,$this->applicant_tel,format_date_database($this->applicant_birthday),
                              5,format_date_database($this->applicant_joindate),$this->applicant_postal_code,$this->applicant_unit_no,$this->applicant_address,
                              $this->applicant_postal_code2,$this->applicant_unit_no2,$this->applicant_address2,$this->applicant_black_list,
-                             $this->applicant_height, $this->applicant_weight,
+                             $this->applicant_height, $this->applicant_weight, $this->applicant_applicantpass,
                              $this->applicant_login_email,$this->applicant_login_password,$this->applicant_seqno,$this->applicant_status,
                              $this->applicant_outlet,$this->applicant_email,$this->applicant_department,$this->applicant_bank,
                              $this->applicant_bank_acc_no,$this->applicant_nationality,
@@ -435,10 +435,12 @@ class Applicant {
         }
     ?>
         <?php if($this->follow_id > 0){?>
-        <h3>Update Remarks  </h3>
+        <h3>Update Remarks</h3>
         <?php }else{?>
         <h3>Create Remarks</h3> 
         <?php }?>
+        <button type="button" class="btn btn-primary" style="width:150px;margin-right:10px;" onclick="window.location.href='applicant.php?action=edit&current_tab=followup&applicant_id=<?php echo $this->applicant_id; ?>'">Create New Remarks &nbsp; <i class="fa fa-plus-square" aria-hidden="true"></i></button>
+        <br><br>
         <div class="form-group ">
             <?php if($_SESSION['empl_group'] == "4") {?>
             <label for="assign_to" class="col-sm-2 control-label">Assign To</label>
@@ -734,6 +736,18 @@ class Applicant {
                     <input type="text" class="form-control datepicker" id="available_date" name="available_date" value = "<?php echo format_date($this->available_date);?>" placeholder="Date">
                 </div>
             </div>
+            <div class="form-group">
+                <label for="not_suitable" class="col-sm-2 control-label">Not Suitable</label>
+
+                    <div class="radio col-sm-3">
+                     <select class="form-control select2" id="not_suitable" name="not_suitable" style = 'width:100%'>
+
+                        <option value="0" <?php if($this->not_suitable == '0'){echo "SELECTED";}?>>No</option>
+                        <option value="1" <?php if($this->not_suitable == '1'){echo "SELECTED";}?>>Yes</option>
+
+                     </select>
+                     </div>
+            </div>
         </div>
         
         <!--Assign Candidate To Empl-->
@@ -1014,9 +1028,9 @@ class Applicant {
                              $this->follow_notice, $this->applicant_id);           
         }
         else{
-        $table_field = array('follow_id','assign_to','follow_type','interview_time','interview_date','fol_assign_manager',
+        $table_field = array('follow_id','assign_to','follow_type','interview_time','interview_date','fol_assign_manager','fol_not_suitable',
                              'interview_company','interview_by','fol_available_date','fol_position_offer','fol_expected_salary','fol_offer_salary','attend_interview','received_offer','comments','follow_notice','applfollow_id');
-        $table_value = array('', $this->assign_to,$this->follow_type,$this->interview_time,format_date_database($this->interview_date),$this->assign_manager,
+        $table_value = array('', $this->assign_to,$this->follow_type,$this->interview_time,format_date_database($this->interview_date),$this->assign_manager,$this->not_suitable,
                              $this->interview_company, $this->interview_by,format_date_database($this->available_date),$this->position_offer,$this->expected_salary,$this->offer_salary,$this->applicant_attend, $this->received_offer, $this->followup_comments,
                              $this->follow_notice, $this->applicant_id);
         }
@@ -1062,16 +1076,16 @@ class Applicant {
             }
             else{
                 if($_SESSION['empl_group'] == "4"){
-                $table_field = array( 'assign_to','follow_type','interview_time','interview_date',
+                $table_field = array( 'assign_to','follow_type','interview_time','interview_date','fol_not_suitable',
                                      'interview_company','interview_by','fol_available_date','fol_position_offer','fol_expected_salary','fol_offer_salary','attend_interview','received_offer','comments','follow_notice');
-                $table_value = array( $this->assign_to,$this->follow_type,$this->interview_time,format_date_database($this->interview_date),
+                $table_value = array( $this->assign_to,$this->follow_type,$this->interview_time,format_date_database($this->interview_date),$this->not_suitable,
                                      $this->interview_company, $this->interview_by,format_date_database($this->available_date),$this->position_offer,$this->expected_salary,$this->offer_salary,$this->applicant_attend, $this->received_offer, $this->followup_comments,
                                      $this->follow_notice);
                 }
                 else {
-                $table_field = array('interview_time','interview_date',
+                $table_field = array('interview_time','interview_date','fol_not_suitable',
                                      'interview_by','fol_available_date','attend_interview','received_offer');
-                $table_value = array($this->interview_time,format_date_database($this->interview_date),
+                $table_value = array($this->interview_time,format_date_database($this->interview_date),$this->not_suitable,
                                      $this->interview_by,format_date_database($this->available_date),$this->applicant_attend, $this->received_offer);
                 }
             }
@@ -1086,16 +1100,16 @@ class Applicant {
             }
             else{
                 if($_SESSION['empl_group'] == "4"){
-                $table_field = array( 'assign_to','follow_type','interview_time','interview_date',
+                $table_field = array( 'assign_to','follow_type','interview_time','interview_date','fol_not_suitable',
                                      'interview_company','interview_by','fol_available_date','fol_position_offer','fol_expected_salary','fol_offer_salary','attend_interview','received_offer','comments','follow_notice');
-                $table_value = array( $this->assign_to,$this->follow_type,$this->interview_time,format_date_database($this->interview_date),
+                $table_value = array( $this->assign_to,$this->follow_type,$this->interview_time,format_date_database($this->interview_date),$this->not_suitable,
                                      $this->interview_company, $this->interview_by,format_date_database($this->available_date),$this->position_offer,$this->expected_salary,$this->offer_salary,$this->applicant_attend, $this->received_offer, $this->followup_comments,
                                      $this->follow_notice);
                 }
                 else {
-                $table_field = array('follow_type','interview_time','interview_date',
+                $table_field = array('follow_type','interview_time','interview_date','fol_not_suitable',
                                      'interview_company','interview_by','fol_available_date','fol_position_offer','fol_expected_salary','fol_offer_salary','attend_interview','received_offer','comments');
-                $table_value = array($this->follow_type,$this->interview_time,format_date_database($this->interview_date),
+                $table_value = array($this->follow_type,$this->interview_time,format_date_database($this->interview_date),$this->not_suitable,
                                      $this->interview_company, $this->interview_by,format_date_database($this->available_date),$this->position_offer,$this->expected_salary,$this->offer_salary,$this->applicant_attend, $this->received_offer, $this->followup_comments,
                                      $this->follow_notice);
                 }
@@ -2019,6 +2033,7 @@ class Applicant {
             $this->applicant_nationality = $row['applicant_nationality'];
             $this->applicant_height = $row['applicant_height'];
             $this->applicant_weight = $row['applicant_weight'];
+            $this->applicant_applicantpass = $row['applicant_applpass'];
             
             $this->applicant_marital_status = $row['applicant_marital_status'];
             $this->applicant_religion = $row['applicant_religion'];
@@ -2148,6 +2163,7 @@ class Applicant {
             $this->fol_department = $row['fol_department'];
             $this->fol_payroll_empl = $row['fol_payroll_empl'];            
             $this->available_date = $row['fol_available_date'];
+            $this->not_suitable = $row['fol_not_suitable'];
             $this->position_offer = $row['fol_position_offer'];
             $this->expected_salary = $row['fol_expected_salary'];
             $this->fol_job_type = $row['fol_job_type'];
@@ -2242,7 +2258,7 @@ class Applicant {
         $this->religionCrtl = $this->select->getReligionSelectCtrl($this->applicant_religion);
         $this->raceCrtl = $this->select->getRaceSelectCtrl($this->applicant_race);
         $this->designationCrtl = $this->select->getDesignationSelectCtrl($this->applicant_designation);
-        
+        $this->applicantpassCrtl = $this->select->getEmplPassSelectCtrl($this->applicant_applicantpass);
 
         
     ?>
@@ -2584,7 +2600,7 @@ class Applicant {
                 else if ($('#follow_type').val()=='2'){
                 var data = "action=saveFollowup&applicant_id=<?php echo $this->applicant_id;?>&assign_to="+$('#assign_to').val()+"&follow_type="+$('#follow_type').val()+"&interview_time="+$('#interview_time').val();
                     data = data + "&interview_date="+$('#interview_date').val()+"&interview_company="+$('#interview_company').val()+"&interview_by="+$('#interview_by').val()+"&available_date="+$('#available_date').val()+"&position_offer="+$('#position_offer').val()+"&expected_salary="+$('#expected_salary').val()+"&offer_salary="+$('#offer_salary').val(); 
-                    data = data + "&applicant_attend="+$('#applicant_attend').val()+"&received_offer="+$('#received_offer').val()+"&followup_comments="+command+"&follow_notice="+$('#follow_notice').val()+"&follow_id="+$('#follow_id').val();
+                    data = data + "&applicant_attend="+$('#applicant_attend').val()+"&received_offer="+$('#received_offer').val()+"&followup_comments="+command+"&follow_notice="+$('#follow_notice').val()+"&follow_id="+$('#follow_id').val()+"&not_suitable="+$('#not_suitable').val();
                 }
                 else if ($('#follow_type').val()=='4'){
                 var data = "action=saveFollowup&applicant_id=<?php echo $this->applicant_id;?>&assign_to="+$('#assign_to2').val()+"&follow_type="+$('#follow_type').val()+"&interview_time=";
@@ -2649,7 +2665,6 @@ class Applicant {
             
             $('#follow_type').change(function(){
                 var data = $(this);
-                console.log(data);
                 if(data.val() == "0"){
                     $('#assign_to').attr("disabled","disabled");
                     $('.assigntoclient').show();
@@ -2657,6 +2672,7 @@ class Applicant {
                     $('.assignCandidateToEmpl').hide();
                     $('.assign').hide();
                     $('.default').show();
+                    CKEDITOR.instances['editor1'].setData("Assign candidate to client");
                 }
                 else if(data.val() == "2"){
                     $('#assign_to').attr("disabled","disabled"); 
@@ -2665,6 +2681,8 @@ class Applicant {
                     $('.assignCandidateToEmpl').hide();
                     $('.assign').hide();
                     $('.default').show();
+
+                    CKEDITOR.instances['editor1'].setData("Assign candidate to interview");
                 }
                 else if(data.val() == "3" || data.val() == "4"){
                     $('#assign_to').attr("disabled",false);
@@ -2673,6 +2691,7 @@ class Applicant {
                     $('.assignCandidateToEmpl').show();
                     $('.assign').show();
                     $('.default').hide();
+                    CKEDITOR.instances['editor1'].setData("Assign candidate to employee");
                 }
                 else
                 {
@@ -2682,9 +2701,12 @@ class Applicant {
                     $('.assignCandidateToEmpl').hide();
                     $('.assign').hide();
                     $('.default').show();
+                    CKEDITOR.instances['editor1'].setData("");
                 }
             });    
             
+            var follow_id = <?php if($this->follow_id > 0){echo $this->follow_id;} else echo 0; ?>;
+  
             if ($('#follow_type').val() == "0"){
                 $('#assign_to').attr("disabled","disabled");
                 $('.assigntoclient').show();
@@ -2692,7 +2714,9 @@ class Applicant {
                 $('.assignCandidateToEmpl').hide();
                 $('.assign').hide();
                 $('.default').show();
-                
+                if(follow_id < 1){
+                    CKEDITOR.instances['editor1'].setData("Assign candidate to client");
+                }
             }
             else if($('#follow_type').val() == "2"){
                 $('#assign_to').attr("disabled","disabled");
@@ -2701,6 +2725,9 @@ class Applicant {
                 $('.assignCandidateToEmpl').hide();
                 $('.assign').hide();
                 $('.default').show();
+                if(follow_id < 1){
+                    CKEDITOR.instances['editor1'].setData("Assign candidate to interview");
+                }
             }
             else if($('#follow_type').val() == "3" || $('#follow_type').val() == "4"){
                     $('.assigninterview').hide();
@@ -2708,6 +2735,9 @@ class Applicant {
                     $('.assignCandidateToEmpl').show();
                     $('.assign').show();
                     $('.default').hide();
+                if(follow_id < 1){
+                    CKEDITOR.instances['editor1'].setData("Assign candidate to employee");
+                }
             }
             else
             {
@@ -2717,6 +2747,9 @@ class Applicant {
                     $('.assignCandidateToEmpl').hide();
                     $('.assign').hide();
                     $('.default').show();
+                if(follow_id < 1){
+                    CKEDITOR.instances['editor1'].setData("");
+                }                    
             }               
             
             
@@ -3089,6 +3122,8 @@ function getBankCode(bank){
                  <select class="form-control" id="applicant_status" name="applicant_status">
                    <option value = '1' <?php if($this->applicant_status == 1){ echo 'SELECTED';}?>>Active</option>
                    <option value = '0' <?php if($this->applicant_status == 0){ echo 'SELECTED';}?>>In-active</option>
+                   <option value = '2' <?php if($this->applicant_status == 2){ echo 'SELECTED';}?>>Close</option>
+                   
                  </select>
             </div>
 
@@ -3489,7 +3524,7 @@ function getBankCode(bank){
                               INNER JOIN db_group gp ON gp.group_id = applicant.applicant_group
                               LEFT JOIN db_department dp ON dp.department_id = applicant.applicant_department
                               LEFT JOIN db_outl outl ON outl.outl_id = applicant.applicant_outlet
-                              WHERE applicant.applicant_id > 0 AND applicant.applicant_status = '1'
+                              WHERE applicant.applicant_id > 0
                               ORDER BY applicant.applicant_seqno,applicant.applicant_name";
                       $query = mysql_query($sql);
                       $i = 1;
@@ -4291,15 +4326,19 @@ $message = ob_get_clean();
                 $pdf->SetTextColor(0,0,255);
                 $pdf->Cell(27, 5, "");
                 
+                $pdf->SetFont('Arial', '', 8);
                 $pdf->Cell(120, 53, $row['applicant_position']); 
+                $pdf->SetFont('Arial', '', 10);
                 $pdf->Cell(-118, 53, format_date(date("Y-m-d")));
 
+                $pdf->SetFont('Arial', '', 8);
                 $pdf->Cell(110, 88, $row['applicant_name']); 
+                $pdf->SetFont('Arial', '', 10);
                 $pdf->Cell(5, 89, $row['nric_left']. " - " );
                 $pdf->Cell(17, 89, $row['nric_mid']. " - " );
                 $pdf->Cell(-135, 89, $row['nric_right'] );
                 
-                $pdf->SetFont('Arial', '', 8);
+                $pdf->SetFont('Arial', '', 7);
                 $pdf->Cell(-6, 103, $row['applicant_unit_number']." ".$row['applicant_street'] );
                 
                 $pdf->SetFont('Arial', '', 10);
@@ -4364,56 +4403,65 @@ $message = ob_get_clean();
                 
                 $pdf->Cell(50, 160, $row['applicant_mobile']); 
                 $pdf->Cell(75, 160, $row['applicant_tel'] );
-                $pdf->Cell(-140, 160, $row['applicant_numberofchildren'] );
+                $pdf->Cell(-148, 160, $row['applicant_numberofchildren'] );
                 
-                $pdf->Cell(125, 175, $row['applicant_email']); 
-                $pdf->Cell(-85, 175, $row['applicant_height']." cm " . $row['applicant_weight']." kg" );
                 
-                $pdf->Cell(70, 190, $row['applicant_emer_contact']); 
-                $pdf->Cell(-100, 190, $row['applicant_emer_phone1'] );
+                $pdf->Cell(133, 175, $row['applicant_email']); 
+                $pdf->Cell(-89, 175, $row['applicant_height']." cm " . $row['applicant_weight']." kg" );
                 
-                $pdf->Cell(-10, 204, $row['applicant_emer_relation']); 
+                $pdf->SetFont('Arial', '', 8);
+                $pdf->Cell(79, 189, $row['applicant_emer_contact']); 
+                $pdf->SetFont('Arial', '', 10);
+                $pdf->Cell(-108, 189, $row['applicant_emer_phone1'] );
+                
+                $pdf->Cell(-8, 204, $row['applicant_emer_relation']); 
                 
             //Qualification
- 
+                $pdf->SetFont('Arial', '', 7);
                 $pdf->Cell(88, 244, $row['appl_n_level']); 
                 $pdf->Cell(-88, 244, $row['appl_diploma']);    
                 $pdf->Cell(88, 259, $row['appl_o_level']); 
                 $pdf->Cell(-88, 259, $row['appl_degree']);  
                 $pdf->Cell(88, 274, $row['appl_a_level']); 
                 $pdf->Cell(-88, 274, $row['appl_other_qualification']);  
-                
+                $pdf->SetFont('Arial', '', 10);
             //family
                 $pdf->SetY(165);
-                $pdf->Cell(20, 0, ""); 
+                $pdf->Cell(5, 0, ""); 
                 $line = 2;
                 $sql2 = "SELECT * FROM db_family WHERE applicant_family_id = '$this->applicant_id'";
                 $query2 = mysql_query($sql2);
                 while ($row2 = mysql_fetch_array($query2))
                 {
                     
-                    $pdf->Cell(60, $line, $row2['family_name']); 
-                    $pdf->Cell(38, $line, $row2['family_relationship'] );
-                    $pdf->Cell(25, $line, $row2['family_age']); 
-                    $pdf->Cell(-123, $line, $row2['family_occupation'] );
+                    $pdf->Cell(70, $line, $row2['family_name']); 
+                    $pdf->Cell(43, $line, $row2['family_relationship'] );
+                    $pdf->Cell(18, $line, $row2['family_age']); 
+                    $pdf->SetFont('Arial', '', 8);
+                    $pdf->Cell(-131, $line, $row2['family_occupation'] );
+                    $pdf->SetFont('Arial', '', 10);
                     $line = $line + 10;
                     if($line > 45)
                     {
                         break;
                     }
                 }
+                $pdf->Cell(15, 81, ""); 
+                $pdf->SetFont('Arial', '', 8);
                 $pdf->Cell(93, 81, $row['appl_written']); 
                 $pdf->Cell(-93, 81, $row['appl_spoken']);   
+                $pdf->SetFont('Arial', '', 10);
                 
             //referee
+                $pdf->SetFont('Arial', '', 9);
                 $pdf->SetY(240);
-                $pdf->Cell(15, 0, "");
-                $pdf->Cell(50, 8, $row['referee_name1']); 
-                $pdf->Cell(50, 8, $row['referee_occupation1']); 
+                $pdf->Cell(4, 0, "");
+                $pdf->Cell(52, 8, $row['referee_name1']); 
+                $pdf->Cell(59, 8, $row['referee_occupation1']); 
                 $pdf->Cell(30, 8, $row['referee_year_know1']);
-                $pdf->cell(-130, 8, $row['referee_contact_no1']);
-                $pdf->Cell(50, 22, $row['referee_name2']); 
-                $pdf->Cell(50, 22, $row['referee_occupation2']); 
+                $pdf->cell(-141, 8, $row['referee_contact_no1']);
+                $pdf->Cell(52, 22, $row['referee_name2']); 
+                $pdf->Cell(59, 22, $row['referee_occupation2']); 
                 $pdf->Cell(30, 22, $row['referee_year_know2']);
                 $pdf->cell(-53, 22, $row['referee_contact_no2']);
                 

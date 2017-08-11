@@ -59,7 +59,6 @@ class Payroll {
         
         $this->return_array = 1;
         $b = $this->previewPayslip();
-        
 
         foreach($b as $c){
 
@@ -67,7 +66,7 @@ class Payroll {
                                  'payline_additional','payline_deductions','payline_cpf_employer','payline_cpf_employee',
                                  'payline_levy_employee','payline_netpay');
             $table_value = array($this->payroll_id,$c['empl_id'],$c['department_id'],$c['empl_salary'],
-                                 $c['empl_addtional'],$c['empl_deductions_without_leave'],$c['cpf_employer'],$c['cpf_employee'],
+                                 $c['empl_addtional'],$c['empl_deductions'],$c['cpf_employer'],$c['cpf_employee'],
                                  $c['Levy_employee'],$c['payline_netpay']);
             $remark = "Insert Payroll Lines.";
             if($this->save->SaveData($table_field,$table_value,'db_payline','payline_id',$remark)){
@@ -1233,7 +1232,6 @@ class Payroll {
                 
             $b[$i]['payline_netpay'] = (($empl_salary_array['emplsalary_amount'] + $b[$i]['empl_addtional']) - $b[$i]['empl_deductions']) - $b[$i]['cpf_employee'];
             
-                    
             $b[$i]['salary'] = $empl_salary_array['emplsalary_amount'];
             $b[$i]['payroll_startdate'] = $this->payroll_startdate;
             $b[$i]['payroll_enddate'] = $this->payroll_enddate;
@@ -1269,7 +1267,7 @@ class Payroll {
         }
         return ROUND($additional_amt,2);
     }
-    public function getDeductionsSalaryBackup($empl_id,$datefrom,$dateto,$empl_salary_array,$include_deductcpf,$iscalcdac = false){
+    public function getDeductionsSalarybackup($empl_id,$datefrom,$dateto,$empl_salary_array,$include_deductcpf,$iscalcdac = false){
 
         if($include_deductcpf){
             $wherestring = " AND deductions_affect_cpf = 1";
@@ -1387,10 +1385,65 @@ class Payroll {
         
         $deductions_array['deductions_with_cpf'] = $deduction_with_cpf;
 
+        $leave_amt = 0;
+        $total_leave = 0;
+        $sql4 = "SELECT * FROM db_leave WHERE leave_empl_id = '$empl_id' AND leave_approvalstatus = 'Approved' AND ((leave_datefrom BETWEEN '$datefrom' AND '$dateto') OR (leave_dateto BETWEEN '$datefrom' AND '$dateto')) AND leave_empl_type = '0' AND leave_type !='9' AND leave_unpaid >'0'";
+        $query4 = mysql_query($sql4);
+        while($row4 = mysql_fetch_array($query4)){
+            $dateStart = $row4['leave_datefrom'];
+            $dateEnd = $row4['leave_dateto'];
+         
+            $dateStartMonth = substr($dateStart, 5,2);
+            $dateEndMonth = substr($dateEnd, 5,2);
+            $dateCurrent = substr($datefrom, 5,2);
+
+            if($dateStartMonth < $dateEndMonth){;
+                if($dateStartMonth == $dateCurrent){
+                    $lastDay = date("Y-m-t", strtotime($datefrom));
+                    $date1=date_create($dateStart);
+                    $date2=date_create($lastDay);
+                    $diff=date_diff($date1,$date2);
+
+                    $diff->format("%a");
+                    $day = (double)$diff->format("%a");
+                    $day++;
+                    if(($row4['leave_total_day'] - $day) < $row4['leave_unpaid']){
+                        
+                        $this_month_leave = $row4['leave_unpaid'] - ($row4['leave_total_day'] - $day);
+
+                        $leave_amt = $day_salary * $this_month_leave;
+                        $total_extra_leave = $total_extra_leave + $leave_amt;         
+                    }
+                }
+                else
+                {
+                    $firstDay = date('d-m-Y', strtotime($datefrom));
+                    $date3=date_create($firstDay);
+                    $date4=date_create($dateEnd);
+                    $diff2=date_diff($date3,$date4);
+                    $diff2->format("%a");
+                   
+                    $day2 = (double)$diff2->format("%a");
+                    $day2++;
+                    if(($day2) >= $row4['leave_unpaid']){
+                        $leave_amt = $day_salary * $row4['leave_unpaid'];
+                        $total_extra_leave = $total_extra_leave + $leave_amt;         
+                    }else
+                    {
+                        $leave_amt = $day_salary * $day2;
+                        $total_extra_leave = $total_extra_leave + $leave_amt; 
+                    }
+                } 
+            }
+            else{
+                $leave_amt = $day_salary * (double)$row4['leave_unpaid'];
+                $total_extra_leave = $total_extra_leave + $leave_amt;
+            }
+        }
 
         $sql1 = "SELECT * FROM db_leave WHERE leave_status = '1' AND leave_empl_type = '0' AND leave_type = '9' AND leave_empl_id = '$empl_id' AND leave_duration = 'full_day' AND leave_approvalstatus = 'Approved' AND  ((leave_datefrom BETWEEN '$datefrom' AND '$dateto') OR (leave_dateto BETWEEN '$datefrom' AND '$dateto'))";
         $query1 = mysql_query($sql1);
-        $leave_amt = 0;
+        
         while($row1 = mysql_fetch_array($query1)){
             $dateStart = $row1['leave_datefrom'];
             $dateEnd = $row1['leave_dateto'];
@@ -1431,11 +1484,12 @@ class Payroll {
             }
             $deductions_amt = $deductions_amt + $leave_amt;
         }
+        //echo $total_extra_leave;
         
-        $deductions_array['deductions_with_cpf'] = $deductions_array['deductions_with_cpf'] + $total_leave;
+        $deductions_array['deductions_with_cpf'] = $deductions_array['deductions_with_cpf'] + $total_leave+$total_extra_leave;
                 
-        $deductions_array['deductions_total_amt'] = ROUND($deductions_amt,1);
-        $deductions_array['leave_amt'] = ROUND($total_leave,1);
+        $deductions_array['deductions_total_amt'] = ROUND($deductions_amt+$total_extra_leave,1);
+        $deductions_array['leave_amt'] = ROUND($total_leave+$total_extra_leave,1);
         
         //return ROUND($deductions_amt,2);
         return $deductions_array;
@@ -1643,9 +1697,9 @@ class Payroll {
                                 <tr>
                                     <td><?php echo $row['leavetype_code'];?></td>
                                     <td><?php echo $row['emplleave_entitled'];?></td>
-                                    <td><?php echo "$ ".num_format($taken);?></td>
-                                    <td><?php echo "$ ".num_format($pending);?></td>
-                                    <td><?php echo "$ ".num_format($row['emplleave_entitled'] - $taken);?></td>
+                                    <td><?php echo num_format($taken);?></td>
+                                    <td><?php echo num_format($pending);?></td>
+                                    <td><?php echo num_format($row['emplleave_entitled'] - $taken);?></td>
                                 </tr>
                             <?php
                             }

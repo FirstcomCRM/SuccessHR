@@ -60,16 +60,18 @@ class Leave {
            return true;
         }
     }
-    public function updateApproveStatus($leave_approvalstatus){
-        $table_field = array('leave_approvalstatus');
-        $table_value = array($leave_approvalstatus);
-        $remark = "Update Approve Status.";
+    public function delete(){
+        $table_field = array('leave_status','leave_approvalstatus');
+        $table_value = array(0,'Deleted');
+        $remark = "Delete Leave.";
         if(!$this->save->UpdateData($table_field,$table_value,'db_leave','leave_id',$remark,$this->leave_id)){
            return false;
         }else{
+           $this->putBackLeaveDays(); 
            return true;
         }
     }
+    
     public function pictureManagement(){
         if(!file_exists("dist/images/leave")){
            mkdir('dist/images/leave/');
@@ -135,17 +137,7 @@ class Leave {
             return $query;
         }
     }
-    public function delete(){
-        $table_field = array('leave_status','leave_approvalstatus');
-        $table_value = array(0,'Deleted');
-        $remark = "Delete Leave.";
-        if(!$this->save->UpdateData($table_field,$table_value,'db_leave','leave_id',$remark,$this->leave_id)){
-           return false;
-        }else{
-           $this->putBackLeaveDays(); 
-           return true;
-        }
-    }
+    
     public function getInputForm($action){
         global $mandatory;
         include_once 'class/Empl.php';
@@ -736,36 +728,47 @@ class Leave {
         
         $('#result').hide();
         
+        $('#leave_datefrom').change(function(){
+                $('#leave_type').trigger('change');    
+        });  
+        $('#leave_dateto').change(function(){
+                $('#leave_type').trigger('change');    
+        });       
+        
        $('#leave_type').change(function(){
             var value = $(this);
-            var data = "action=getBalance&appl_id=<?php echo $_SESSION['empl_id']?>&leavetype_id="+$(this).val();
-            $.ajax({ 
-                type: 'POST',
-                url: 'leave.php',
-                cache: false,
-                data:data,
-                error: function(xhr) {
-                    alert("System Error.");
-                    issend = false;
-                },       
-                success: function(data) {
-                       var jsonObj = eval ("(" + data + ")");
-                            document.getElementById("balance").value = jsonObj['balance'];
-                            var leave_total_day = document.getElementById("leave_total_day").value
-//                            console.log(jsonObj['balance']);
-                            if( parseFloat(jsonObj['balance']) >= parseFloat(leave_total_day)){
-                                $('#checkbalance').show();
-                                $('#result').hide();
-                            }
-                            else
-                            {
-                                $('#checkbalance').hide();
-                                $('#result').show();
-                            }
-                       issend = false;
-                    }		
-                 });
-                 return false;
+            var user_type = <?php echo $_SESSION['empl_group'];?>
+
+            if(user_type == "5"){
+                var data = "action=getBalance&appl_id=<?php echo $_SESSION['empl_id']?>&leavetype_id="+$(this).val();
+                $.ajax({ 
+                    type: 'POST',
+                    url: 'leave.php',
+                    cache: false,
+                    data:data,
+                    error: function(xhr) {
+                        alert("System Error.");
+                        issend = false;
+                    },       
+                    success: function(data) {
+                           var jsonObj = eval ("(" + data + ")");
+                                document.getElementById("balance").value = jsonObj['balance'];
+                                var leave_total_day = document.getElementById("leave_total_day").value
+    //                            console.log(jsonObj['balance']);
+                                if( parseFloat(jsonObj['balance']) >= parseFloat(leave_total_day)){
+                                    $('#checkbalance').show();
+                                    $('#result').hide();
+                                }
+                                else
+                                {
+                                    $('#checkbalance').hide();
+                                    $('#result').show();
+                                }
+                           issend = false;
+                        }		
+                     });
+                     return false;
+             }
             });    
        
          
@@ -1027,6 +1030,7 @@ class Leave {
 </html>
     <?php
     }
+    
     public function getApprovalStatus($status){
         
         switch ($status) {
@@ -1056,6 +1060,17 @@ class Leave {
         }
         return $return_status;
     }
+    public function updateApproveStatus($leave_approvalstatus){
+        $table_field = array('leave_approvalstatus');
+        $table_value = array($leave_approvalstatus);
+        $remark = "Update Approve Status.";
+        if(!$this->save->UpdateData($table_field,$table_value,'db_leave','leave_id',$remark,$this->leave_id)){
+           return false;
+        }else{
+           return true;
+        }
+    }    
+    
     public function email(){
         include_once 'Empl.php';
         $e = new Empl();
@@ -1178,6 +1193,7 @@ class Leave {
     mail_attachment($my_file,$my_path,$staff_email,$my_mail,$my_name, $my_replyto,$my_subject,$message,$cc_email);
     return true;
     }
+    
     public function calculateLeave($empl_id,$leave_apply_type,$leave_apply_days){
 
 //leave type id 10 = "Urgent Leave";
@@ -1185,9 +1201,10 @@ class Leave {
 
 // Customer mention urgent leave same with annual leave , calculate together at 2016-12-07 (Zen)
 
-if($leave_apply_type == 10){
-   $leave_apply_type = 1;// convert urgent leave to annual leave
-}
+    if($leave_apply_type == 10){
+       $leave_apply_type = 1;// convert urgent leave to annual leave
+    }
+    
         $sql = "SELECT emplleave_days FROM db_emplleave WHERE emplleave_leavetype = '$leave_apply_type' AND emplleave_empl = '$empl_id' AND emplleave_status = '1' AND emplleave_year = '" . date("Y") . "'";
         $query = mysql_query($sql);
         $balance_days = 0;
@@ -1207,6 +1224,7 @@ if($leave_apply_type == 10){
         }
         return array('paid_leave'=>$paid_leave,'unpaid_leave'=>$unpaid_leave);
     }
+    
     public function insertApproveLevel($type_code,$type_id,$approvel_level){
       
         $table_field = array('type_code','type_id','level1_empl','level1_approve_date',
@@ -1229,10 +1247,11 @@ if($leave_apply_type == 10){
            return false;
         }else{
            $this->updateApproveStatus('Approved');
-           $this->updateEmployeeLeave($er['empl_id'],$r['leave_type'],$days);
+//           $this->updateEmployeeLeave($er['empl_id'],$r['leave_type'],$days);
            return true;
         }
     }
+    
     public function checkAccess($action){
         global $master_group;
         if(($action == 'createForm') || ($action == 'create') || ($action == '')){
@@ -1281,6 +1300,7 @@ if($leave_apply_type == 10){
         }
         return $days;
     }
+    
     public function updateEmployeeLeave($empl_id,$emplleave_leavetype,$days){
         if($days['paid_leave'] <=0){
             $days_paid = 0;
@@ -1552,9 +1572,10 @@ if($leave_apply_type == 10){
                 $this->saveApproveNotification($this->sstatus_action);
             }
             if($this->updateApproveLevel($ap,$approved_id)){
+                $this->updateEmployeeLeave($er['empl_id'],$r['leave_type'],$days);
                 if($this->checkAllApproved($r['leave_id'],'leave')){
                     if($this->sstatus_action == 'Approved'){
-                        $this->updateEmployeeLeave($er['empl_id'],$r['leave_type'],$days);
+//                        $this->updateEmployeeLeave($er['empl_id'],$r['leave_type'],$days);
                         if(leave_insert_cal > 0){
                            $this->insertCal($r,$er);
                         }
@@ -1661,6 +1682,7 @@ if($leave_apply_type == 10){
             mysql_query($sql);
         }
     }
+    
     public function saveNotification($leave_approvalstatus){
         $table_field = array('noti_id','noti_to','noti_url','noti_parent_id','noti_desc','noti_view_status','noti_type');
         

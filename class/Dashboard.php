@@ -262,22 +262,31 @@ class Dashboard {
           "paging": true,
           "lengthChange": false,
           "searching": true,
-          "ordering": true,
+          "ordering": false,
           "info": true,
           "autoWidth": false
         });
       });        
       $(function () {
-        $('#client_table').DataTable({
+        $('#consultant_client_table').DataTable({
           "paging": true,
           "lengthChange": false,
           "searching": true,
-          "ordering": true,
+          "ordering": false,
           "info": true,
           "autoWidth": false
         });
       });       
-      
+      $(function () {
+        $('#client_table').DataTable({
+          "paging": true,
+          "lengthChange": false,
+          "searching": true,
+          "ordering": false,
+          "info": true,
+          "autoWidth": false
+        });
+      });           
       
   
         $('.close_alert_payslip').click(function(){
@@ -605,6 +614,10 @@ class Dashboard {
                 e.preventDefault();
                 remarks($(this).attr("pid"));
         });
+        
+//        $('#applicant_table').DataTable(function(e){
+//                e.preventDefault();
+//        });
             
             $('.clickTable').on('click',function(){
                 var data = "action=getclickTableDetail&applicant_id="+$(this).attr("pid");
@@ -3080,30 +3093,43 @@ if($row['leavetype_id'] == 1){
                                 <?php 
                                 $i = 1;
                                 $id = $_SESSION['empl_id'];
-                                $sql = "Select a.* from db_applicant a INNER JOIN db_followup f ON a.applicant_id = f.applfollow_id where (f.follow_type = '3' OR f.follow_type = '4') and f.fol_status = '0'";
+                                $sql = "Select * from db_empl where empl_group = '4'";
                                 $query = mysql_query($sql);
-                                while($row = mysql_fetch_array($query)){
+                                while( $row = mysql_fetch_array($query)){
                                 ?>
-                                <tr class="clickTable" pid="<?php echo $row['applicant_id'];?>">
-                                    <td><?php echo $i;?></td>
-                                    <td><?php echo $row['applicant_name'];?></td>
-                                    <td>
-                                        <?php
-                                        $today = date("Y-m-d");
-                                        $sql11 = "SELECT * FROM db_followup WHERE follow_type = '0' AND fol_assign_expiry_date >= '$today' AND fol_status = '0' AND applfollow_id = '$row[applicant_id]'"; 
-                                        //echo $sql11;
-                                        $query11 = mysql_query($sql11);
-                                        if($row11 = mysql_fetch_array($query11)){ ?>
-                                            <a href="applicant.php?action=edit&current_tab=followup&applicant_id=<?php echo $row[applicant_id];?>&follow_id=<?php echo $row11['follow_id'];?>&edit=1"><button type='button' style='background-color: #3c5bf7; border-color: #0c4da0; width:85px;' class='btn btn-primary btn-warning'>Assigned</button></a>
-                                        <?php }else{ ?>
-                                            <a href="applicant.php?action=edit&current_tab=followup&applicant_id=<?php echo $row[applicant_id];?>"><button type='button' style='background-color: #009688; border-color: #007368;width:85px;' class='btn btn-primary btn-warning'>Unassigned</button></a>
-                                        <?php } 
-                                        ?>
-                                    </td>                                        
-                                </tr>
+                                    <tr style="background-color: #49a078">
+                                        <td>--</td>
+                                        <td><?php echo "Manager : " . $row['empl_name']; ?></td>
+                                        <td>--</td>
+                                    </tr>
                                 
-                            <?php $i++;
-                                } ?>
+                                    <?php    
+                                    $sql3 = "Select a.* from db_applicant a INNER JOIN db_followup f ON a.applicant_id = f.applfollow_id where (f.follow_type = '3' OR f.follow_type = '4') and f.fol_status = '0' and fol_assign_manager = '$row[empl_id]'";
+                                    $query3 = mysql_query($sql3);
+                                    while($row3 = mysql_fetch_array($query3)){
+                                        ?>
+                                    <tr class="clickTable" pid="<?php echo $row3['applicant_id'];?>">
+                                        <td><?php echo $i;?></td>
+                                        <td><?php echo $row3['applicant_name'];?></td>
+                                        <td>
+                                            <?php
+                                            $today = date("Y-m-d");
+                                            $sql11 = "SELECT * FROM db_followup WHERE follow_type = '0' AND fol_assign_expiry_date >= '$today' AND fol_status = '0' AND applfollow_id = '$row3[applicant_id]'"; 
+                                            //echo $sql11;
+                                            $query11 = mysql_query($sql11);
+                                            if($row11 = mysql_fetch_array($query11)){ ?>
+                                                <a href="applicant.php?action=edit&current_tab=followup&applicant_id=<?php echo $row3[applicant_id];?>&follow_id=<?php echo $row11['follow_id'];?>&edit=1"><button type='button' style='background-color: #3c5bf7; border-color: #0c4da0; width:85px;' class='btn btn-primary btn-warning'>Assigned</button></a>
+                                            <?php }
+                                            else{ ?>
+                                                <a href="applicant.php?action=edit&current_tab=followup&applicant_id=<?php echo $row3[applicant_id];?>"><button type='button' style='background-color: #009688; border-color: #007368;width:85px;' class='btn btn-primary btn-warning'>Unassigned</button></a>
+                                            <?php }
+                                            ?>
+                                        </td>                                        
+                                    </tr>
+                                
+                                <?php $i++;
+                                    }
+                                }?>
                             </tbody>
                         </table>       
                     </div>
@@ -3130,33 +3156,47 @@ if($row['leavetype_id'] == 1){
                             <tbody>
                                 <?php 
                                 $i = 1;
-                                $sql = "SELECT * FROM db_partner p INNER JOIN db_empl e ON p.partner_sales_person = e.empl_id WHERE (p.partner_sales_person != '$_SESSION[empl_id]' AND e.empl_manager != '$_SESSION[empl_id]') AND partner_dashboard_display = '0'";
+                                $sql = "Select * from db_empl where empl_group = '4'";
                                 $query = mysql_query($sql);
-                                while($row = mysql_fetch_array($query)){
-                                    $sql3 = "SELECT * FROM db_dashbroad_display WHERE display_type = 'partner table' AND display_parent_id = '$row[partner_id]' AND display_empl_id = '$_SESSION[empl_id]'";
-                                    $query3 = mysql_query($sql3);
-                                    $row3 = mysql_num_rows($query3);
-                                    if($row3 == 0){
-                                        ?>
-                                        <tr class="clientApplicant" pid="<?php echo $row['partner_id'];?>">
-                                            <td><?php echo $i;?></td>
-                                            <td><?php echo $row['partner_name'];?></td>
-                                            <td>
-                                                <?php
-                                                    $sql2 = "SELECT a.* FROM db_followup f INNER JOIN db_partner p ON f.interview_company = p.partner_id INNER JOIN db_applicant a ON a.applicant_id = f.applfollow_id WHERE f.follow_type = '0' AND f.fol_status = '0' AND f.interview_company = '$row[partner_id]' AND f.fol_approved = 'Y'";
-                                                    $query2 = mysql_query($sql2);
-                                                    $row2 = mysql_num_rows($query2);
-                                                    echo $row2;
-                                                ?>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-danger btn-client delete" pid="<?php echo $row['partner_id']?>"><i class="fa fa-dw fa-close"></i></button>
-        <!--                                        <button type="button" class="btn btn-info btn-client"><i class="fa fa-dw fa-check"></i></button>-->
-                                            </td>
-                                        </tr>                               
-                                    <?php $i++;
+                                while( $row = mysql_fetch_array($query)){
+                                ?>
+                                    <tr style="background-color: #49a078">
+                                        <td>--</td>
+                                        <td><?php echo "Manager : " . $row['empl_name']; ?></td>
+                                        <td>--</td>
+                                        <td>--</td>
+                                    </tr>
+                                <?php
+                                
+                                    $sql4 = "SELECT * FROM db_partner p INNER JOIN db_empl e ON p.partner_sales_person = e.empl_id WHERE (p.partner_sales_person = '$row[empl_id]' OR e.empl_manager = '$row[empl_id]') AND partner_dashboard_display = '0'";
+                                    $query4 = mysql_query($sql4);
+                                    while($row4 = mysql_fetch_array($query4)){
+                                        $sql3 = "SELECT * FROM db_dashbroad_display WHERE display_type = 'partner table' AND display_parent_id = '$row4[partner_id]' AND display_empl_id = '$_SESSION[empl_id]'";
+                                        $query3 = mysql_query($sql3);
+                                        $row3 = mysql_num_rows($query3);
+                                        if($row3 == 0){
+                                            ?>
+                                            <tr class="clientApplicant" pid="<?php echo $row4['partner_id'];?>">
+                                                <td><?php echo $i;?></td>
+                                                <td><?php echo $row4['partner_name'];?></td>
+                                                <td>
+                                                    <?php
+                                                        $sql2 = "SELECT a.* FROM db_followup f INNER JOIN db_partner p ON f.interview_company = p.partner_id INNER JOIN db_applicant a ON a.applicant_id = f.applfollow_id WHERE f.follow_type = '0' AND f.fol_status = '0' AND f.interview_company = '$row4[partner_id]' AND f.fol_approved = 'Y'";
+                                                        $query2 = mysql_query($sql2);
+                                                        $row2 = mysql_num_rows($query2);
+                                                        echo $row2;
+                                                    ?>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-client delete" pid="<?php echo $row['partner_id']?>"><i class="fa fa-dw fa-close"></i></button>
+            <!--                                        <button type="button" class="btn btn-info btn-client"><i class="fa fa-dw fa-check"></i></button>-->
+                                                </td>
+                                            </tr>                               
+                                        <?php $i++;
+                                        }
                                     }
-                                } ?>                                
+                            }
+                            ?>                                
                             </tbody>
                                 
                         </table>       
@@ -3533,13 +3573,12 @@ if($row['leavetype_id'] == 1){
                                     <?php $i++;
                                     }
                                 } ?>                              
-                            </tbody>
-                            <tbody>
+
                                 <tr style="background-color: #49a078">
-                                    <td></td>
+                                    <td>--</td>
                                     <td>Other Manager Client</td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>--</td>
+                                    <td>--</td>
                                 </tr> 
                                 <?php 
                                 $sql = "SELECT * FROM db_partner p INNER JOIN db_empl e ON p.partner_sales_person = e.empl_id WHERE (p.partner_sales_person != '$_SESSION[empl_id]' AND e.empl_manager != '$_SESSION[empl_id]') AND partner_dashboard_display = '0'";
@@ -4200,7 +4239,7 @@ if($row['leavetype_id'] == 1){
                     </div><!-- /.box-header -->    
 
                         <div class="box-body">
-                          <table id="client_table" class="table table-bordered table-hover table-cursor">
+                          <table id="consultant_client_table" class="table table-bordered table-hover table-cursor">
                             <thead>
                               <tr>
                                 <th style = 'width:3%'>No</th>
@@ -4240,13 +4279,12 @@ if($row['leavetype_id'] == 1){
                                     <?php $i++;
                                     }
                                 } ?>                           
-                            </tbody>
-                            <tbody>
+
                                 <tr style="background-color: #49a078">
-                                    <td></td>
+                                    <td>--</td>
                                     <td>Own Manager Client</td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>--</td>
+                                    <td>--</td>
                                 </tr> 
                                 <?php 
                                     $sql = "SELECT * FROM db_partner p INNER JOIN db_empl e ON p.partner_sales_person = e.empl_id WHERE p.partner_sales_person != '$_SESSION[empl_id]' AND (e.empl_manager = '$manager' or p.partner_sales_person = '$manager')";
@@ -4277,13 +4315,12 @@ if($row['leavetype_id'] == 1){
                                         }
                                     } 
                                 ?>                                
-                            </tbody>                            
-                            <tbody>
+
                                 <tr style="background-color: #49a078">
-                                    <td></td>
-                                    <td>Other Manager or Consultant Client</td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>--</td>
+                                    <td>Other Manager Client</td>
+                                    <td>--</td>
+                                    <td>--</td>
                                 </tr> 
                                 <?php 
                                 $sql = "SELECT * FROM db_partner p INNER JOIN db_empl e ON p.partner_sales_person = e.empl_id WHERE p.partner_sales_person != '$_SESSION[empl_id]' AND (e.empl_manager != '$manager' AND p.partner_sales_person != '$manager')";
