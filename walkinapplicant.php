@@ -116,6 +116,7 @@
     $o->declaration_law = escape($_POST['declaration_law']);
     $o->declaration_warning = escape($_POST['declaration_warning']);
     $o->declaration_applied = escape($_POST['declaration_applied']);
+    $o->tc_date = escape($_POST['tc_date']);
     $o->db_specify = escape($_POST['db_specify']);
     $o->dp_specify = escape($_POST['dp_specify']);
     $o->dltm_specify = escape($_POST['dltm_specify']);
