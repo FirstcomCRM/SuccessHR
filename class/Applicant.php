@@ -625,7 +625,6 @@ class Applicant {
                 <div class="col-sm-3">
                      <select class="form-control select2" id="fol_approved" name="fol_approved" style = 'width:100%' <?php if($this->fol_approved == 'Y' || $this->fol_approved == 'N'){ echo 'disabled';} ?>>
                         <option value="">Select One</option>
-                        <option value="0" <?php if($this->fol_approved == '0'){ echo 'SELECTED';}?>>Pending</option>
                         <option value="Y" <?php if($this->fol_approved == 'Y'){ echo 'SELECTED';}?>>Yes</option>
                         <option value="N" <?php if($this->fol_approved == 'N'){ echo 'SELECTED';}?>>Not Suitable</option>
                      </select>
@@ -741,7 +740,6 @@ class Applicant {
 
                     <div class="radio col-sm-3">
                      <select class="form-control select2" id="not_suitable" name="not_suitable" style = 'width:100%'>
-
                         <option value="0" <?php if($this->not_suitable == '0'){echo "SELECTED";}?>>No</option>
                         <option value="1" <?php if($this->not_suitable == '1'){echo "SELECTED";}?>>Yes</option>
 
@@ -4433,11 +4431,10 @@ $message = ob_get_clean();
                 $query2 = mysql_query($sql2);
                 while ($row2 = mysql_fetch_array($query2))
                 {
-                    
+                    $pdf->SetFont('Arial', '', 7);
                     $pdf->Cell(70, $line, $row2['family_name']); 
                     $pdf->Cell(43, $line, $row2['family_relationship'] );
                     $pdf->Cell(18, $line, $row2['family_age']); 
-                    $pdf->SetFont('Arial', '', 8);
                     $pdf->Cell(-131, $line, $row2['family_occupation'] );
                     $pdf->SetFont('Arial', '', 10);
                     $line = $line + 10;
@@ -4453,15 +4450,18 @@ $message = ob_get_clean();
                 $pdf->SetFont('Arial', '', 10);
                 
             //referee
-                $pdf->SetFont('Arial', '', 9);
+                $pdf->SetFont('Arial', '', 7);
                 $pdf->SetY(240);
                 $pdf->Cell(4, 0, "");
                 $pdf->Cell(52, 8, $row['referee_name1']); 
-                $pdf->Cell(59, 8, $row['referee_occupation1']); 
+                $pdf->Cell(59, 8, $row['referee_occupation1']);
+                $pdf->SetFont('Arial', '', 9);
                 $pdf->Cell(30, 8, $row['referee_year_know1']);
                 $pdf->cell(-141, 8, $row['referee_contact_no1']);
+                $pdf->SetFont('Arial', '', 7);
                 $pdf->Cell(52, 22, $row['referee_name2']); 
                 $pdf->Cell(59, 22, $row['referee_occupation2']); 
+                $pdf->SetFont('Arial', '', 9);
                 $pdf->Cell(30, 22, $row['referee_year_know2']);
                 $pdf->cell(-53, 22, $row['referee_contact_no2']);
                 

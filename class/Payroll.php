@@ -1177,7 +1177,7 @@ class Payroll {
                 FROM db_empl empl
                 LEFT JOIN db_department ed ON ed.department_id = empl.empl_department
                 LEFT JOIN db_emplpass ep ON ep.emplpass_id = empl.empl_emplpass
-                WHERE empl.empl_status = '1' $wherestring AND empl.empl_client < 1 AND empl_group != '6'";
+                WHERE empl.empl_status = '1' $wherestring AND empl.empl_client < 1 AND empl_group != '6' AND empl.empl_department > '0'";
 
         $query = mysql_query($sql);
         $i = 0;    

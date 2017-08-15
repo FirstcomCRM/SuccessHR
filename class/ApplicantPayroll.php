@@ -617,7 +617,7 @@ class ApplicantPayroll {
                          + "<td style = 'text-align:right'>$ " + changeNumberFormat(RoundNum(jsonObj[i]['empl_deductions'],2)) + "</td>"
                          + "<td style = 'text-align:right'>$ " + changeNumberFormat(RoundNum(jsonObj[i]['cpf_employee'],2)) + "</td>"
                          + "<td style = 'text-align:right'>$ " + changeNumberFormat(RoundNum(((parseFloat(jsonObj[i]['empl_addtional']) + parseFloat(jsonObj[i]['empl_salary'])) - (parseFloat(jsonObj[i]['empl_deductions']) + parseFloat(jsonObj[i]['cpf_employee']))),2)) + "</td>"
-                         + "<td style = 'text-align:right'><a href = '#' class='btn btn-info astatus' payroll_id = '' empl_id = '" + jsonObj[i]['empl_id'] + "' data-toggle='modal' data-target='#sstatusModal' target = '_blank'> View </a></td>"
+                         //+ "<td style = 'text-align:right'><a href = '#' class='btn btn-info astatus' payroll_id = '' empl_id = '" + jsonObj[i]['empl_id'] + "' data-toggle='modal' data-target='#sstatusModal' target = '_blank'> View </a></td>"
                          + "</tr>";
                          grand_amt = parseFloat(grand_amt) + ((parseFloat(jsonObj[i]['empl_addtional']) + parseFloat(jsonObj[i]['empl_salary'])) - (parseFloat(jsonObj[i]['empl_deductions']) + parseFloat(jsonObj[i]['cpf_employee'])));
                          

@@ -126,8 +126,8 @@ class JobsPosting {
         global $mandatory; 
         $this->job_categoryCrtl = $this->select->getCategorySelectCtrl($this->job_category);
         $this->jobownerCrtl = $this->select->getClientSelectCtrl($this->job_owner);
-        $this->assignCrtl = $this->select->getEmployeeSelectCtrl($this->job_person_incharge,'Y');
-
+        
+        $this->assignCrtl = $this->select->getSalesPersonCtrl($this->job_person_incharge,'Y');
 //        $this->assignCrtl = $this->select->getAssignSelectCtrl($this->job_person_incharge);
     ?>
    <html>

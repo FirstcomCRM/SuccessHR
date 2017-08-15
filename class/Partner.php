@@ -2955,7 +2955,7 @@ class Partner {
                 <h4>Leave</h4>
                 </div>
                 <div class="col-sm-5">
-                <h4>Claims</h4>
+                <!--<h4>Claims</h4>-->
                 </div>
             </div>
             <div class="form-group">
@@ -2965,12 +2965,12 @@ class Partner {
                         <?php echo $this->clientLeaveCrtl1;?>
                     </select>
                 </div>
-                <label for="applicant_claims_approved1" class="col-sm-2 control-label">Approved level 1</label>
+<!--                <label for="applicant_claims_approved1" class="col-sm-2 control-label">Approved level 1</label>
                 <div class="col-sm-3">
                     <select class="form-control select2" id="applicant_claims_approved1" name="applicant_claims_approved1" style = 'width:100%' >
                         <?php echo $this->clientClaimsCrtl1;?>
                     </select>
-                </div>
+                </div>-->
             </div>
             <div class="form-group">
                 <label for="applicant_leave_approved2" class="col-sm-2 control-label">Approved level 2</label>
@@ -2979,12 +2979,12 @@ class Partner {
                         <?php echo $this->clientLeaveCrtl2;?>
                     </select>
                 </div>
-                <label for="applicant_claims_approved2" class="col-sm-2 control-label">Approved level 2</label>
+<!--                <label for="applicant_claims_approved2" class="col-sm-2 control-label">Approved level 2</label>
                 <div class="col-sm-3">
                     <select class="form-control select2" id="applicant_claims_approved2" name="applicant_claims_approved2" style = 'width:100%' >
                         <?php echo $this->clientClaimsCrtl2;?>
                     </select>
-                </div>
+                </div>-->
             </div>
             <div class="form-group">
                 <label for="applicant_leave_approved3" class="col-sm-2 control-label">Approved level 3</label>
@@ -2993,12 +2993,12 @@ class Partner {
                         <?php echo $this->clientLeaveCrtl3;?>
                     </select>
                 </div>
-                <label for="applicant_claims_approved3" class="col-sm-2 control-label">Approved level 3</label>
+<!--                <label for="applicant_claims_approved3" class="col-sm-2 control-label">Approved level 3</label>
                 <div class="col-sm-3">
                     <select class="form-control select2" id="applicant_claims_approved3" name="applicant_claims_approved3" style = 'width:100%' >
                         <?php echo $this->clientClaimsCrtl3;?>
                     </select>
-                </div>
+                </div>-->
             </div>
     <?php
     }    

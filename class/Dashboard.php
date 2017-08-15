@@ -287,7 +287,16 @@ class Dashboard {
           "autoWidth": false
         });
       });           
-      
+      $(function () {
+        $('#assigned_table').DataTable({
+          "paging": true,
+          "lengthChange": false,
+          "searching": true,
+          "ordering": false,
+          "info": true,
+          "autoWidth": false
+        });
+      });       
   
         $('.close_alert_payslip').click(function(){
             var data = "selfview=1&action=updateSelfView&payroll_id=" + $(this).attr('pid') + "&empl_id="+ $(this).attr('eid');
@@ -448,19 +457,27 @@ class Dashboard {
 
                     if( jsonObj['applicant']!=null){
                         activeApplTable = "<h4>"+jsonObj['aRemarks']['empl_name'][0]+"</h4><table class= 'table table-bordered table-hover' id='active_appl_table'" + "><thead><tr> <th style = 'width:2%'>No</th>";
-                        activeApplTable = activeApplTable + "<th style = 'width:7%'>Candidate Name</th><th style = 'width:6%'>Mobile</th><th style = 'width:6%'>Email</th><th style = 'width:8%'></th></tr></thead><tbody>";
+                        activeApplTable = activeApplTable + "<th style = 'width:7%'>Candidate Name</th><th style = 'width:4%'>Mobile</th><th style = 'width:4%'>Email</th><th style = 'width:8%'></th></tr></thead><tbody>";
                         var pn = 1;
                         for(var i=0;i<jsonObj['applicant']['applicant_name'].length;i++){
                         activeApplTable = activeApplTable + "<tr id='" + jsonObj['applicant']['applicant_id'][i] + "'><td><a href='applicant.php?action=edit&applicant_id=" + jsonObj['applicant']['applicant_id'][i] + "'>" + pn + "</a></td><td>" + jsonObj['applicant']['applicant_name'][i] + "</td><td>" + jsonObj['applicant']['applicant_mobile'][i] + "</td><td>" + jsonObj['applicant']['applicant_email'][i] + "</td>";
                         activeApplTable = activeApplTable + "<td><button type='button' class='btn btn-warning btn-client showremarks' data-toggle='tooltip' title='Show All Remark' style='margin-right: 2px' pid='&string=and a.applicant_id=" + jsonObj['applicant']['applicant_id'][i] +"' id = '" + jsonObj['aRemarks']['empl_id'][0] + "'>R</button>";
                         activeApplTable = activeApplTable + "<button type='button' class='btn btn-info btn-client showremarks' data-toggle='tooltip' title='Show Interview' style='margin-right: 2px' pid='&string=and a.applicant_id=" + jsonObj['applicant']['applicant_id'][i] + " and f.follow_type=2' id = '" + jsonObj['aRemarks']['empl_id'][0] + "'>I</button>";
                         activeApplTable = activeApplTable + "<button type='button' class='btn btn-success btn-client showremarks' data-toggle='tooltip' title='Assigned' style='margin-right: 2px' pid='&string=and a.applicant_id=" + jsonObj['applicant']['applicant_id'][i] + " and f.follow_type=0' id = '" + jsonObj['aRemarks']['empl_id'][0] + "'>S</button>";
-                        activeApplTable = activeApplTable + "<button type='button' class='btn btn-danger btn-client delete' data-toggle='tooltip' title='Clear' style='margin-right: 2px' pid='" + jsonObj['applicant']['follow_id'][i] + "'><i class='fa fa-dw fa-close'></i></button></td></tr>";
+                        activeApplTable = activeApplTable + "<button type='button' class='btn btn-danger btn-client delete' data-toggle='tooltip' title='Clear' style='margin-right: 2px' pid='" + jsonObj['applicant']['follow_id'][i] + "'><i class='fa fa-dw fa-close'></i></button></td>";
+                                
+                        //activeApplTable = activeApplTable + "<select id='select_dd'><option value='0'>Select One</option>";
+                        //activeApplTable = activeApplTable + "<option value='D1'>D1</option>";
+                        //activeApplTable = activeApplTable + "<option value='D2'>D2</option>";
+                        //activeApplTable = activeApplTable + "<option value='D3'>D3</option>";
+                        //activeApplTable = activeApplTable + "<option value='D4'>D4</option>";
+                        //activeApplTable = activeApplTable + "<option value='D5'>D5</option></select>";
+                        activeApplTable = activeApplTable + "</td></tr>";       
                                 
                         pn++;
                     }
                     activeApplTable = activeApplTable + "</tbody><tfoot><tr> <th style = 'width:2%'>No</th>";
-                           activeApplTable = activeApplTable + "<th style = 'width:7%'>Candidate Name</th><th style = 'width:7%'>Mobile</th><th style = 'width:7%'>Email</th><th style = 'width:7%'></th></tr></tfoot></table>";
+                           activeApplTable = activeApplTable + "<th style = 'width:7%'>Candidate Name</th><th style = 'width:4%'>Mobile</th><th style = 'width:4%'>Email</th><th style = 'width:8%'></th></tr></tfoot></table>";
                     }
                     else
                     {
@@ -512,16 +529,10 @@ class Dashboard {
                         });
                       });  
                     
-//                      $(function () {
-//                        $('#empl_remark_table').DataTable({
-//                          "paging": true,
-//                          "lengthChange": false,
-//                          "searching": true,
-//                          "ordering": true,
-//                          "info": true,
-//                          "autoWidth": false
-//                        });
-//                      });                      
+                    $('.select_dd').change(function(){
+                        selectDD();
+                    });
+
                     
                     $('.showremarks').on('click',function(){
                         var data = "action=getRemarkDetail&empl_id="+$(this).attr("id")+"&applicant_id="+$(this).attr("pid");
@@ -552,7 +563,6 @@ class Dashboard {
                                     }
                                     table = table + "</tbody><tfoot><tr> <th style = 'width:2%'>No</th><th style = 'width:5%'>Client</th>";
                                            table = table + "<th style = 'width:5%'>Follow Type</th><th style = 'width:15%'>Description</th><th style = 'width:5%'>Time & Date</th></tr></tfoot></table>";
-
                                 }
                                 else
                                 {
@@ -609,6 +619,13 @@ class Dashboard {
          if(id == "8"){
              remarks(<?php echo $_SESSION['empl_id'];?>);
          }
+         
+        //$('#follow_type').change(function(){
+
+        function selectDD(){
+            alert("HERE");
+        }
+
          
         $('.remarks').click(function(e){
                 e.preventDefault();
@@ -3021,6 +3038,7 @@ if($row['leavetype_id'] == 1){
   
         <?php 
     }
+    
     public function getAdminDashboard(){
         ?>
         <div class = "col-md-4">
@@ -3294,6 +3312,7 @@ if($row['leavetype_id'] == 1){
                     </div>                        
                         <?php }        
     }
+    
     public function getManagerDashboardBackup(){
         ?>      <div class = "col-md-7">
                     <div class="box box-success" style="border-top-color:#00a7d0">
@@ -3427,6 +3446,44 @@ if($row['leavetype_id'] == 1){
             
                 <div class="box box-success">
                     <div class="box-header with-border">
+                        <h3 class="box-title"><?php echo "List of candidates assigned need approver";?></h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div><!-- /.box-header -->    
+
+                        <div class="box-body">
+                          <table id="assigned_table" class="table table-bordered table-hover ">
+                            <thead>
+                              <tr>
+                                    <th style = 'width:3%'>No</th>
+                                    <th style = 'width:13%'>Candidate Name</th>
+                                    <th style = 'width:5%'>Client Name</th>
+                              </tr>
+                            </thead>
+                            <tbody>             
+                                <?php 
+                                $i = 1;
+                                $id = $_SESSION['empl_id'];
+                                $sql = "Select a.*, f.*, e.* from db_applicant a INNER JOIN db_followup f ON a.applicant_id = f.applfollow_id INNER JOIN db_empl e ON e.empl_id = f.insertBy WHERE f.follow_type = '0' AND (e.empl_id = '$id' OR e.empl_manager = '$id') AND f.fol_status = '0' AND f.fol_approved = ''";
+                                $query = mysql_query($sql);
+                                while($row = mysql_fetch_array($query)){
+                                ?>
+                                <tr>
+                                    <td><a href="applicant.php?action=edit&current_tab=followup&applicant_id=<?php echo $row[applicant_id];?>&follow_id=<?php echo $row[follow_id];?>&edit=1" style="color:red"><?php echo $i;?></a></td>
+                                    <td><?php echo $row['applicant_name'];?></td>
+                                    <td><?php echo $row['empl_name'];?></td>                                        
+                                </tr>
+                            <?php $i++;
+                                } ?>
+                            </tbody>
+                        </table>       
+                    </div>
+            </div>               
+            
+            
+                <div class="box box-success">
+                    <div class="box-header with-border">
                         <h3 class="box-title"><?php echo $_SESSION['empl_name']." : Total Resume";?></h3>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -3523,7 +3580,10 @@ if($row['leavetype_id'] == 1){
                             </tbody>
                         </table>       
                     </div>
-            </div>   
+            </div>            
+            
+            
+            
             
                 <div class="box box-success">
                     <div class="box-header with-border">
@@ -3619,6 +3679,7 @@ if($row['leavetype_id'] == 1){
 
         <?php
     }
+    
     public function getRemarkDashboard(){
         ?>
             <div class="col-md-7" >
@@ -3750,6 +3811,7 @@ if($row['leavetype_id'] == 1){
             </div>  
         <?php
     }
+    
     public function getConsultantDashboardBackup(){?>
             <div class="col-md-6">
                 <div class="col-md-12">
@@ -4361,6 +4423,7 @@ if($row['leavetype_id'] == 1){
 
         <?php
     }
+    
     public function getRemarks(){
         $applicant_id = escape($_REQUEST['applicant_id']);
         $sql = "select a.*,f.*, f.follow_id, f.assign_to, f.interview_company, f.follow_type, left(f.insertDateTime,10) as date, right(f.insertDateTime, 8) as time, f.interview_company, f.received_offer, f.comments, e.empl_name from db_followup f inner join db_empl e on f.insertBy = e.empl_id inner join db_applicant a on a.applicant_id = f.applfollow_id where f.applfollow_id = '$applicant_id' and f.fol_status = '0' ORDER BY YEAR(date) DESC, MONTH(date) DESC, DAY(date) DESC, time DESC";
@@ -4467,6 +4530,7 @@ if($row['leavetype_id'] == 1){
         
         return $data;
     }
+    
     public function updateDashboardDisplay(){
         $follow_id = escape($_REQUEST['follow_id']);
         $type = "active candidate";

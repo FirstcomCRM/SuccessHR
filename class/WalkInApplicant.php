@@ -21,7 +21,7 @@ class WalkInApplicant {
         $table_field = array('applicant_code','applicant_name','applicant_nric','applicant_tel','applicant_birthday',
                              'applicant_group','applicant_joindate','applicant_postal_code','applicant_unit_number',
                              'applicant_street','applicant_postal_code2','applicant_unit_number2','applicant_street2','applicant_black_list',
-                             'applicant_height', 'applicant_weight',
+                             'applicant_height', 'applicant_weight','applicant_applpass',
                              'applicant_login_email','applicant_login_password','applicant_seqno','applicant_status',
                              'applicant_outlet','applicant_email','applicant_department','applicant_bank',
                              'applicant_bank_acc_no','applicant_nationality',
@@ -48,7 +48,7 @@ class WalkInApplicant {
         $table_value = array(get_prefix_value("Applicant code",true),$this->applicant_name,$this->applicant_nric,$this->applicant_tel,format_date_database($this->applicant_birthday),
                              5,format_date_database($this->applicant_joindate),$this->applicant_postal_code,$this->applicant_unit_no,$this->applicant_address,
                              $this->applicant_postal_code2,$this->applicant_unit_no2,$this->applicant_address2,$this->applicant_black_list,
-                             $this->applicant_height, $this->applicant_weight,
+                             $this->applicant_height, $this->applicant_weight,$this->applicant_applicantpass,
                              $this->applicant_login_email,$this->applicant_login_password,$this->applicant_seqno,$this->applicant_status,
                              $this->applicant_outlet,$this->applicant_email,$this->applicant_department,$this->applicant_bank,
                              $this->applicant_bank_acc_no,$this->applicant_nationality,
@@ -66,7 +66,7 @@ class WalkInApplicant {
                              $this->declaration_bankrupt, $this->declaration_physical, $this->declaration_lt_medical, $this->declaration_law, $this->declaration_warning, $this->declaration_applied, 
                              $this->db_specify, $this->dp_specify, $this->dltm_specify, $this->dl_specify, $this->dw_specify, $this->da_specify,
                              format_date_database($this->tc_date),
-            
+
                               $this->appl_o_level, $this->appl_n_level, $this->appl_a_level, $this->appl_degree, $this->appl_diploma, $this->appl_other_qualification,
                               $this->appl_written, $this->appl_spoken,
                              $this->overall_impression, $this->communication_skills, $this->other_comments, $this->official_consultant, format_date_database($this->official_date), $this->official_time,
@@ -107,7 +107,7 @@ class WalkInApplicant {
         $table_field = array('applicant_code','applicant_name','applicant_nric','applicant_tel','applicant_birthday',
                              'applicant_group','applicant_joindate','applicant_postal_code','applicant_unit_number',
                              'applicant_street','applicant_postal_code2','applicant_unit_number2','applicant_street2','applicant_black_list',
-                             'applicant_height', 'applicant_weight',
+                             'applicant_height', 'applicant_weight','applicant_applpass',
                              'applicant_login_email','applicant_login_password','applicant_seqno','applicant_status',
                              'applicant_outlet','applicant_email','applicant_department','applicant_bank',
                              'applicant_bank_acc_no','applicant_nationality',
@@ -135,7 +135,7 @@ class WalkInApplicant {
         $table_value = array(get_prefix_value("Applicant code",true),$this->applicant_name,$this->applicant_nric,$this->applicant_tel,format_date_database($this->applicant_birthday),
                              5,format_date_database($this->applicant_joindate),$this->applicant_postal_code,$this->applicant_unit_no,$this->applicant_address,
                              $this->applicant_postal_code2,$this->applicant_unit_no2,$this->applicant_address2,$this->applicant_black_list,
-                             $this->applicant_height, $this->applicant_weight,
+                             $this->applicant_height, $this->applicant_weight,$this->applicant_applicantpass,
                              $this->applicant_login_email,$this->applicant_login_password,$this->applicant_seqno,$this->applicant_status,
                              $this->applicant_outlet,$this->applicant_email,$this->applicant_department,$this->applicant_bank,
                              $this->applicant_bank_acc_no,$this->applicant_nationality,
@@ -255,158 +255,6 @@ class WalkInApplicant {
         $table_value = array($applicantleave_days,$applicantleave_disabled,$applicantleave_entitled);
         $remark = "Update Applicant Leaves.";
         if(!$this->save->UpdateData($table_field,$table_value,'db_applicantleave','applicantleave_id',$remark,$applicantleave_id," AND applicantleave_applicant = '$this->applicant_id'")){
-           return false;
-        }else{
-           return true;
-        }
-    }
-    
-    public function getSalaryForm(){
-        if($this->applicantsalary_id > 0){
-           $this->fetchSalaryDetail(" AND applicantsalary_id = '$this->applicantsalary_id'","","",1);
-        }else{
-           $this->applicantsalary_overtime = "0.00";
-           $this->applicantsalary_hourly = "0.00";
-           $this->applicantsalary_workday = 20;
-           $this->applicantsalary_amount = 0;
-        }
-    ?>
-        <?php if($this->applicantsalary_id > 0){?>
-        <h3>Update Applicant Salary  <button type="button" class="btn btn-primary" style="width:150px;margin-right:10px;" onclick="window.location.href='walkinapplicant.php?action=edit&current_tab=Salary Info&applicant_id=12'">Create New Salary &nbsp; <i class="fa fa-plus-square" aria-hidden="true"></i></button></h3>
-        <?php }else{?>
-        <h3>Create New Applicant Salary</h3> 
-        <?php }?>
-        <div class="form-group">
-              <label for="applicantsalary_date" class="col-sm-2 control-label">Date</label>
-              <div class="col-sm-2">
-               <input type="text" class="form-control datepicker" id="applicantsalary_date" name="applicantsalary_date" value = "<?php echo format_date($this->applicantsalary_date);?>" placeholder="Adjustment Date">
-              </div>
-        </div>
-        <div class="form-group">
-              <label for="applicantsalary_amount" class="col-sm-2 control-label">Salary ($)</label>
-              <div class="col-sm-3">
-                  <input type="text" style = 'text-align:right' class="form-control" id="applicantsalary_amount" name="applicantsalary_amount" value = "<?php echo num_format($this->applicantsalary_amount);?>" placeholder="Salary ($)">
-              </div>
-              <label for="applicantsalary_workday" class="col-sm-2 control-label">	No of Work Days in Month</label>
-              <div class="col-sm-3">
-               <input type="text" style = 'text-align:right' class="form-control" id="applicantsalary_workday" name="applicantsalary_workday" value = "<?php echo $this->applicantsalary_workday;?>" placeholder="Total Working Days">
-              </div>
-        </div>
-        <div class="form-group">
-              <label for="applicantsalary_hourly" class="col-sm-2 control-label">Hourly Salary Rate</label>
-              <div class="col-sm-3">
-                <input type="text" style = 'text-align:right' class="form-control" id="applicantsalary_hourly" name="applicantsalary_hourly" value = "<?php echo $this->applicantsalary_hourly;?>" placeholder="Hourly Salary">
-              </div>
-              <label for="applicantsalary_overtime" class="col-sm-2 control-label">Overtime Hourly Rate</label>
-              <div class="col-sm-3">
-               <input type="text" style = 'text-align:right' class="form-control" id="applicantsalary_overtime" name="applicantsalary_overtime" value = "<?php echo $this->applicantsalary_overtime;?>" placeholder="Overtime Hourly ">
-              </div>
-        </div>
-
-        <div class="form-group">
-          <label for="applicantsalary_remark" class="col-sm-2 control-label">Remark</label>
-          <div class="col-sm-3">
-                <textarea class="form-control" rows="3" id="applicantsalary_remark" name="applicantsalary_remark" placeholder="Remark"><?php echo $this->applicantsalary_remark;?></textarea>
-          </div>
-          <div class="col-sm-3 "></div>
-          <div class="col-sm-3 ">
-              <button type = "button" class="btn btn-info save_salary_btn" >
-                  <?php if($this->applicantsalary_id > 0){?>
-                  Update
-                  <?php }else{?>
-                  Save
-                  <?php }?>
-              </button>
-              <input type = 'hidden' value = '<?php echo $this->applicantsalary_id;?>' name = 'applicantsalary_id' id = 'applicantsalary_id'/>
-          </div>
-        </div>
-        <table id="applicant_table" class="table table-bordered table-hover dataTable">
-                    <thead>
-                      <tr>
-                        <th style = 'width:3%'>No</th>
-                        <th style = 'width:10%'>Date</th>
-                        <th style = 'width:10%'>Salary ($)</th>
-                        <th style = 'width:25%'>Remark</th>
-                        <th style = 'width:10%'>Update By</th>
-                        <th style = 'width:10%'></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    <?php   
-                      $sql = "SELECT ey.*
-                              FROM db_applicantsalary ey 
-                              WHERE ey.applicantsalary_applicant_id = '{$this->applicant_id}' AND ey.applicantsalary_status = 1";
-                      $query = mysql_query($sql);
-                      $i = 1;
-                      while($row = mysql_fetch_array($query)){
-                    ?>
-                        <tr>
-                            <td><?php echo $i;?></td>
-                            <td><?php echo format_date($row['applicantsalary_date']);?></td>
-                            <td><?php echo num_format($row['applicantsalary_amount']);?></td>
-                            <td><?php echo nl2br($row['applicantsalary_remark']);?></td>
-                            <td><?php echo getDataCodeBySql("applicant_name","db_applicant","WHERE  applicant_id = '{$row['updateBy']}'","");?></td>
-                            <td class = "text-align-right">
-                                <?php 
-                                if(getWindowPermission($_SESSION['m'][$_SESSION['empl_id']],'update')){
-                                ?>
-                                <button type="button" class="btn btn-primary btn-info " onclick = "location.href = 'walkinapplicant.php?action=edit&current_tab=Salary Info&applicant_id=<?php echo $this->applicant_id;?>&applicantsalary_id=<?php echo $row['applicantsalary_id'];?>'">Edit</button>
-                                <?php }?>
-                                <?php 
-                                if(getWindowPermission($_SESSION['m'][$_SESSION['empl_id']],'delete')){
-                                ?>
-                                <button type="button" class="btn btn-primary btn-danger " onclick = "confirmAlertHref('walkinapplicant.php?action=deletesalary&current_tab=Salary Info&applicant_id=<?php echo $this->applicant_id;?>&applicantsalary_id=<?php echo $row['applicantsalary_id'];?>','Confirm Delete?')">Delete</button>
-                                <?php }?>
-                            </td>
-                        </tr>
-                    <?php    
-                        $i++;
-                      }
-                    ?>
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <th style = 'width:3%'>No</th>
-                        <th style = 'width:10%'>Date</th>
-                        <th style = 'width:10%'>Salary ($)</th>
-                        <th style = 'width:25%'>Remark</th>
-                        <th style = 'width:10%'>Update By</th>
-                        <th style = 'width:10%'></th>
-                      </tr>
-                    </tfoot>
-                  </table>
-    <?php
-    }
-    public function createSalary(){
-        $table_field = array('applicantsalary_applicant_id','applicantsalary_date','applicantsalary_amount','applicantsalary_remark','applicantsalary_status',
-                             'applicantsalary_workday','applicantsalary_hourly','applicantsalary_overtime');
-        $table_value = array($this->applicant_id,format_date_database($this->applicantsalary_date),$this->applicantsalary_amount,$this->applicantsalary_remark,1,
-                             $this->applicantsalary_workday,$this->applicantsalary_hourly,$this->applicantsalary_overtime);
-        $remark = "Create Salary Adjustment.";
-        if(!$this->save->SaveData($table_field,$table_value,'db_applicantsalary','applicantsalary_id',$remark)){
-            return false;
-        }else{
-            return true;
-        }
-    }
-    public function updateSalary(){
-
-        $table_field = array('applicantsalary_applicant_id','applicantsalary_date','applicantsalary_amount','applicantsalary_remark',
-                             'applicantsalary_workday','applicantsalary_hourly','applicantsalary_overtime');
-        $table_value = array($this->applicant_id,format_date_database($this->applicantsalary_date),$this->applicantsalary_amount,$this->applicantsalary_remark,
-                             $this->applicantsalary_workday,$this->applicantsalary_hourly,$this->applicantsalary_overtime);
-        $remark = "Update Salary Adjustment.";
-        if(!$this->save->UpdateData($table_field,$table_value,'db_applicantsalary','applicantsalary_id',$remark,$this->applicantsalary_id," AND applicantsalary_applicant_id = '$this->applicant_id'")){
-           return false;
-        }else{
-           return true;
-        }
-    }
-    public function deleteSalary(){
-        $table_field = array('applicantsalary_status');
-        $table_value = array(0);
-        $remark = "Delete Applicant Salary.";
-        if(!$this->save->UpdateData($table_field,$table_value,'db_applicantsalary','applicantsalary_id',$remark,$this->applicantsalary_id," AND applicantsalary_applicant_id = '$this->applicant_id'")){
            return false;
         }else{
            return true;
@@ -1501,6 +1349,7 @@ class WalkInApplicant {
             $this->applicant_nationality = $row['applicant_nationality'];
             $this->applicant_height = $row['applicant_height'];
             $this->applicant_weight = $row['applicant_weight'];
+            $this->applicant_applicantpass = $row['applicant_applpass'];
             
             $this->applicant_marital_status = $row['applicant_marital_status'];
             $this->applicant_religion = $row['applicant_religion'];
@@ -1710,6 +1559,7 @@ class WalkInApplicant {
         $this->religionCrtl = $this->select->getReligionSelectCtrl($this->applicant_religion);
         $this->raceCrtl = $this->select->getRaceSelectCtrl($this->applicant_race);
         $this->designationCrtl = $this->select->getDesignationSelectCtrl($this->applicant_designation);
+        $this->applicantpassCrtl = $this->select->getEmplPassSelectCtrl($this->applicant_applicantpass);
         
 
         
@@ -1874,7 +1724,8 @@ class WalkInApplicant {
                     ?>
                     <button type = "submit" class="btn btn-info">Submit</button>
                     <?php if($action == "update"){?>
-                    <button type="button" class="btn btn-primary btn-warning " style="margin-left:10px" onclick = "confirmAlertHref('walkinapplicant.php?action=printPDF&applicant_id=<?php echo $this->applicant_id;?>','Confirm')" >Print</button>
+                    <button type="button" class="btn btn-primary btn-warning " target="_blank" style="margin-left:10px" onclick = "window.open('applicant.php?action=printPDF&applicant_id=<?php echo $this->applicant_id;?>')">Print</button>
+                    <!--<button type="button" class="btn btn-primary btn-warning " style="margin-left:10px" onclick = "confirmAlertHref('walkinapplicant.php?action=printPDF&applicant_id=<?php echo $this->applicant_id;?>','Confirm')" >Print</button>-->
                     <?php }
                     
                     }?>
@@ -3515,315 +3366,7 @@ $message = ob_get_clean();
         }
         
     }
-    public function printPDF(){
-        //$pdf = new FPDF('P', 'pt', 'Letter');
-        //$pdf->AddPage(); 
-        
-        $pdf = new FPDI();
 
-        $pageCount = $pdf->setSourceFile('dist/PDF/Application.pdf');
-        
-
-            $tplIdx = $pdf->importPage(1, '/MediaBox');
-            $pdf->addPage();
-            $pdf->useTemplate($tplIdx, 0, 0, 0);
-            $pdf->SetAutoPageBreak(off, 0);
-            $sql = "SELECT *, left(applicant_nric,1) as nric_left, mid(applicant_nric,2,7) as nric_mid, right(applicant_nric, 1) as nric_right, left(applicant_birthday,4) as year FROM `db_applicant` WHERE applicant_id = '$this->applicant_id'";
-            $query = mysql_query($sql);
-            $row = mysql_fetch_array($query);
-
-            //general info
-                $pdf->SetFont('Arial', '', 10);
-
-                $pdf->SetTextColor(0,0,255);
-                $pdf->Cell(27, 5, "");
-                
-                $pdf->Cell(120, 53, $row['applicant_position']); 
-                $pdf->Cell(-118, 53, format_date(date("Y-m-d")));
-
-                $pdf->Cell(110, 88, $row['applicant_name']); 
-                $pdf->Cell(5, 89, $row['nric_left']. " - " );
-                $pdf->Cell(17, 89, $row['nric_mid']. " - " );
-                $pdf->Cell(-135, 89, $row['nric_right'] );
-                
-                $pdf->Cell(-6, 103, $row['applicant_unit_number']." ".$row['applicant_street'] );
-                
-                $pdf->Cell(90, 117, format_date($row['applicant_birthday']));
-                $year = $row['year'];
-                $now = date("Y");
-                
-                
-                $pdf->Cell(50, 117, $now-$year );
-                if($row['applicant_sex'] == "M")
-                {
-                    $pdf->Cell(-110, 117, "MALE" );
-                }
-                else
-                    $pdf->Cell(-110, 117, "FEMALE" );
-            
-                if($row['applicant_race']  == "1"){
-                $pdf->Cell(105, 131.5, "CHINESE" );}
-                else if($row['applicant_race']  == "2"){
-                $pdf->Cell(105, 131.5, "MALAY" );}
-                else if($row['applicant_race']  == "3"){
-                $pdf->Cell(105, 131.5, "INDIAN" );}                   
-                else{
-                    $pdf->Cell(105, 131.5, "" );
-                }   
-                
-                if($row['applicant_religion']  == "1"){
-                $pdf->Cell(-90, 131.5, "BUDDHIST" );}
-                else if($row['applicant_religion']  == "2"){
-                $pdf->Cell(-90, 131.5, "CHRISTIAN" );}
-                else if($row['applicant_religion']  == "3"){
-                $pdf->Cell(-90, 131.5, "HINDU" );}       
-                else if($row['applicant_religion']  == "4"){
-                $pdf->Cell(-90, 131.5, "MUSLIM" );} 
-                else{
-                    $pdf->Cell(-90, 131.5, "" );
-                } 
-                
-                if($row['applicant_nationality'] == "1"){
-                    $pdf->Cell(100, 145.5, "MALAYSIAN" );}
-                else if($row['applicant_nationality'] == "2"){
-                    $pdf->Cell(100, 145.5, "SINGAPOREAN" );}
-                else if($row['applicant_nationality'] == "3"){
-                    $pdf->Cell(100, 145.5, "FILIPINO" );}
-                else{
-                    $pdf->Cell(100, 145.5, "" );
-                }
-                 
-                if($row['applicant_marital_status']  == "S"){
-                $pdf->Cell(-120, 145.5, "SINGLE" );}
-                else if($row['applicant_marital_status']  == "M"){
-                $pdf->Cell(-120, 145.5, "MARRIED" );}
-                else if($row['applicant_marital_status']  == "D"){
-                $pdf->Cell(-120, 145.5, "DIVORCED" );}       
-                else if($row['applicant_marital_status']  == "W"){
-                $pdf->Cell(-120, 145.5, "WIDOWER" );} 
-                else if($row['applicant_marital_status']  == "WE"){
-                $pdf->Cell(-120, 145.5, "WIDOWEE" );} 
-                else{
-                    $pdf->Cell(-120, 145.5, "" );
-                }      
-                
-                $pdf->Cell(50, 160, $row['applicant_mobile']); 
-                $pdf->Cell(75, 160, $row['applicant_tel'] );
-                $pdf->Cell(-140, 160, $row['applicant_numberofchildren'] );
-                
-                $pdf->Cell(125, 175, $row['applicant_email']); 
-                $pdf->Cell(-85, 175, $row['applicant_height']." cm " . $row['applicant_weight']." kg" );
-                
-                $pdf->Cell(70, 190, $row['applicant_emer_contact']); 
-                $pdf->Cell(-100, 190, $row['applicant_emer_phone1'] );
-                
-                $pdf->Cell(-10, 204, $row['applicant_emer_relation']); 
-                
-            //Qualification
- 
-                $pdf->Cell(88, 244, $row['appl_n_level']); 
-                $pdf->Cell(-88, 244, $row['appl_diploma']);    
-                $pdf->Cell(88, 259, $row['appl_o_level']); 
-                $pdf->Cell(-88, 259, $row['appl_degree']);  
-                $pdf->Cell(88, 274, $row['appl_a_level']); 
-                $pdf->Cell(-88, 274, $row['appl_other_qualification']);  
-                
-            //family
-                $pdf->SetY(165);
-                $pdf->Cell(20, 0, ""); 
-                $line = 2;
-                $sql2 = "SELECT * FROM db_family WHERE applicant_family_id = '$this->applicant_id'";
-                $query2 = mysql_query($sql2);
-                while ($row2 = mysql_fetch_array($query2))
-                {
-                    
-                    $pdf->Cell(60, $line, $row2['family_name']); 
-                    $pdf->Cell(38, $line, $row2['family_relationship'] );
-                    $pdf->Cell(25, $line, $row2['family_age']); 
-                    $pdf->Cell(-123, $line, $row2['family_occupation'] );
-                    $line = $line + 10;
-                    if($line > 45)
-                    {
-                        break;
-                    }
-                }
-                $pdf->Cell(93, 81, $row['appl_n_level']); 
-                $pdf->Cell(-93, 81, $row['appl_diploma']);   
-                
-            //referee
-                $pdf->SetY(240);
-                $pdf->Cell(15, 0, "");
-                $pdf->Cell(50, 8, $row['referee_name1']); 
-                $pdf->Cell(50, 8, $row['referee_occupation1']); 
-                $pdf->Cell(30, 8, $row['referee_year_know1']);
-                $pdf->cell(-130, 8, $row['referee_contact_no1']);
-                $pdf->Cell(50, 22, $row['referee_name2']); 
-                $pdf->Cell(50, 22, $row['referee_occupation2']); 
-                $pdf->Cell(30, 22, $row['referee_year_know2']);
-                $pdf->cell(-53, 22, $row['referee_contact_no2']);
-                
-                if($row['referee_present_employer'] == '1'){
-                    $pdf->Cell(-10, 48, "Yes");}
-                else
-                {
-                    $pdf->Cell(-10, 48, "No");
-                }
-                $pdf->Cell(10, 0, "");
-                if($row['referee_previous_employer'] == '1'){
-                    $pdf->Cell(-22.5, 57, "Yes");}
-                else
-                {
-                    $pdf->Cell(-22.5, 57, "No");
-                }
-                
-            $tplIdx = $pdf->importPage(2, '/MediaBox');
-            $pdf->addPage();
-            $pdf->useTemplate($tplIdx, 0, 0, 0);
-            $pdf->Cell(10, 0, "");
-            
-                if($row['declaration_bankrupt'] == '0'){
-                    $pdf->Cell(60, 17, "No");}
-                else
-                {
-                    $pdf->Cell(60, 17, "Yes");
-                }
-                $pdf->Cell(-60, 17, $row['appl_declaration_b_specify']);
-                if($row['declaration_physical'] == '0'){
-                    $pdf->Cell(60, 38, "No");}
-                else
-                {
-                    $pdf->Cell(60, 38, "Yes");
-                }    
-                $pdf->Cell(-60, 38, $row['appl_declaration_p_specify']);
-                if($row['declaration_lt_medical'] == '0'){
-                    $pdf->Cell(60, 59, "No");}
-                else
-                {
-                    $pdf->Cell(60, 59, "Yes");
-                }
-                $pdf->Cell(-60, 59, $row['appl_declaration_ltm_specify']);
-                if($row['declaration_law'] == '0'){
-                    $pdf->Cell(60, 80, "No");}
-                else
-                {
-                    $pdf->Cell(60, 80, "Yes");
-                }    
-                $pdf->Cell(-60, 80, $row['appl_declaration_l_specify']);
-                if($row['declaration_warning'] == '0'){
-                    $pdf->Cell(60, 101, "No");}
-                else
-                {
-                    $pdf->Cell(60, 101, "Yes");
-                }
-                $pdf->Cell(-60, 101, $row['appl_declaration_w_specify']);
-                if($row['declaration_applied'] == '0'){
-                    $pdf->Cell(60, 122, "No");}
-                else
-                {
-                    $pdf->Cell(60, 122, "Yes");
-                }                
-                $pdf->Cell(-60, 122, $row['appl_declaration_a_specify']);
-            
-            //TC
-                
-                $pdf->SetY(222);
-                $pdf->Cell(20, 0, "");
-                $pdf->Cell(20, 0, format_date($row['tc_date']));
-            
-            
-            
-            
-//        $pdf->SetFont('Arial', '', 13);
-//      
-//        $pdf->Cell(130, 5, "");
-//        $pdf->Cell(25, 5, "SUCCESS HUMAN RESOURCE CENTRE PTE LTD"); 
-//        $pdf->Cell(-1, 32, "SUCCESS RESOURCE CENTRE PTE LTD");
-//        
-//        $pdf->SetFont('Arial', '', 10);
-//        $pdf->Cell(30, 60, "Sophia Road #06-23/29 Peace Centre Singapore 228149");
-//        $pdf->Cell(22, 83, "Tel: 63373183    Fax: 63370329 / 63370425");
-//        $pdf->Cell(-200, 105, "Website: www.successhrc.com.sg");
-//        
-//        $pdf->Cell(330, 150, "POSITION : ");
-//        $pdf->Cell(-330, 150, "DATE : ");
-//        
-//        $pdf->SetLineWidth(1);
-//        $pdf->SetFillColor(00, 00, 00);
-//        $pdf->SetLink(100, 300);
-//        $pdf->SetTextColor(255);
-//        $pdf->SetY(120);
-//        $pdf->Cell(540, 15, "PART A: PERSONAL PARTICULARS",1, 0, C, true);
-//        
-//        $pdf->SetTextColor(000);
-//        $pdf->Cell(-537, 5, "");
-//        $pdf->Cell(300, 70, "FULL NAME : ");
-//        $pdf->Cell(-300, 70, "NRIC : ");
-//        
-//        $pdf->Cell(400, 100, "ADDRESS : ");
-//        $pdf->Cell(-400, 100, "S'PORE : ");
-//        
-//        $pdf->Cell(220, 130, "D.O.B :");
-//        $pdf->Cell(100, 130, "AGE :");
-//        $pdf->Cell(-320, 130, "GENDER :");
-//        
-//        $pdf->Cell(320, 160, "RACE :");
-//        $pdf->Cell(-320, 160, "RELIGION :");
-//        
-//        $pdf->Cell(320, 190, "NATIONALITY :");
-//        $pdf->Cell(-320, 190, "MARITAL STATUL :");
-//        
-//        $pdf->Cell(190, 220, "CONTACT NO (HP):");
-//        $pdf->Cell(130, 220, "(H):");
-//        $pdf->Cell(-320, 220, "NO. OF CHILDREN:");
-//      
-//        $pdf->Cell(320, 250, "EMAIL :");
-//        $pdf->Cell(-320, 250, "HEIGHT & WEIGHT :");
-//        
-//        $pdf->Cell(320, 280, "EMERGENCY CONTACT PERSON :");
-//        $pdf->Cell(-320, 280, "(HP):");
-//        
-//        $pdf->Cell(320, 310, "RELATIONSHIP :");
-//        $pdf->Cell(-320, 310, "ORD (For Male Only) :");        
-//        
-//        $pdf->SetLink(100, 300);
-//        $pdf->SetTextColor(255);
-//        $pdf->SetY(300);
-//        $pdf->Cell(540, 15, "PART B: QUALIFICATION",1, 0, C, true);        
-//        
-//        $pdf->SetTextColor(000);
-//        $pdf->Cell(-460, 5, "");
-//        $pdf->Cell(-75, 70, "Please tick the qualifications obtained. State the course of study and/or name of school. ");
-//        
-//        $pdf->Cell(250, 120, "o N-Levels : ");
-//        $pdf->Cell(-250, 120, "o  Diploma  : ");
-//        $pdf->Cell(250, 150, "o  O-Levels : ");
-//        $pdf->Cell(-250, 150, "o  Degree  : ");
-//        $pdf->Cell(250, 180, "o  A-Levels : ");
-//        $pdf->Cell(-250, 180, "o  Others  : ");        
-//        
-//        $pdf->SetLink(100, 300);
-//        $pdf->SetTextColor(255);
-//        $pdf->SetY(410);
-//        $pdf->Cell(540, 15, "PART C: FAMILY BACKGROUND",1, 0, C, true);           
-//        
-//        $pdf->SetTextColor(000);
-//        $pdf->Cell(-480, 5, "");
-//        $pdf->Cell(130, 70, "Name ");
-//        $pdf->Cell(140, 70, "Relationship");
-//        $pdf->Cell(100, 70, "Age ");
-//        $pdf->Cell(-500, 70, "Occupation");
-//        
-//        $pdf->SetLink(100, 300);
-//        $pdf->SetFillColor(255, 255, 255);
-//        $pdf->SetY(460);
-//        $pdf->Cell(540, 15, "PART C: FAMILY BACKGROUND",1, 0, C, true);         
-//        
-//        
-        
-        
-        
-        $pdf->Output();
-    }
 }
 
 ?>
